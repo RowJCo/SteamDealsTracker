@@ -52,10 +52,10 @@ app.get("/api/setupDB", async (req, res) => {
 //Routes
 
 //User routes
-app.post("/api/signup", userController.signUp);
-app.post("/api/signin", userController.signIn);
-app.get("/api/signout", userController.signOut);
-app.get("/api/checkauth", checkAuth, userController.checkAuth);
+app.post("/api/sign-up", userController.signUp);
+app.post("/api/sign-in", userController.signIn);
+app.get("/api/sign-out", userController.signOut);
+app.get("/api/check-auth", checkAuth, userController.checkAuth);
 
 //Game routes
 app.get("/api/games", gameController.getGames);
