@@ -62,10 +62,10 @@ app.get("/api/games", gameController.getGames);
 app.get("/api/games/:game_name", gameController.getGame);
 
 //User game routes
-app.get("/api/usergames", checkAuth, userGameController.getUserGames);
-app.post("/api/usergames", checkAuth, userGameController.addUserGame);
-app.put("/api/usergames/:user_game_id", checkAuth, userGameController.updateUserGame);
-app.delete("/api/usergames/:user_game_id", checkAuth, userGameController.deleteUserGame);
+app.get("/api/user-games", checkAuth, userGameController.getUserGames);
+app.post("/api/user-games", checkAuth, userGameController.addUserGame);
+app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUserGame);
+app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
 
 //Handles Static files
 app.get('/*', function(req, res) {
