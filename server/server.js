@@ -88,17 +88,17 @@ app.listen(process.env.SERVER_PORT, () => {
 });
 
 //Cron jobs
-cron.schedule("24 16 * * *", async () => {
+cron.schedule("30 08 * * *", async () => {
     console.log("Updating game data");
     gameData();
 });
 
-cron.schedule("35 04 * * *", async () => {
+cron.schedule("44 08 * * *", async () => {
     console.log("Checking game prices");
     gamePrices();
 });
 
-cron.schedule("55 06 * * *", async () => {
+cron.schedule("55 08 * * *", async () => {
     console.log("Sending email alerts");
     emailAlert();
 });
