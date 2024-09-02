@@ -10,8 +10,7 @@ const getUserGames = async (req, res) => {
         `;
         const values = [user_id];
         const result = await pool.query(query, values);
-        res.json(result.rows);
-        res.status(200).json({ message: "User games retrieved" });
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error(error.message);
         res.status(400).json({ message: error.message });
@@ -21,9 +20,9 @@ const getUserGames = async (req, res) => {
 const addUserGame = async (req, res) => {
     try {
         const { user_id } = req;
-        const { game_id, buyprice } = req.body;
-        const query = "INSERT INTO users_games (user_id, game_id, buyprice) VALUES ($1, $2, $3) RETURNING *";
-        const values = [user_id, game_id, buyprice];
+        const { game_id, game_name, buyprice } = req.body;
+        const query = "INSERT INTO users_games (user_id, game_id, game_name, buyprice) VALUES ($1, $2, $3, $4) RETURNING *";
+        const values = [user_id, game_id, game_name, buyprice];
         await pool.query(query, values);
         res.status(201).json({ message: "User game created" });
     } catch (error) {
