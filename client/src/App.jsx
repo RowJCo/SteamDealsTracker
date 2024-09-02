@@ -1,12 +1,12 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import HomePage from './pages/HomePage.js';
-import SignInPage from './pages/SignInPage.js';
-import SignUpPage from './pages/SignUpPage.js';
-import SignOutPage from './pages/SignOutPage.js';
-import DashboardPage from './pages/DashboardPage.js';
+import HomePage from './pages/HomePage.jsx';
+import SignInPage from './pages/SignInPage.jsx';
+import SignUpPage from './pages/SignUpPage.jsx';
+import SignOutPage from './pages/SignOutPage.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
 
 
-function Router() {
+function App() {
     return(
         <BrowserRouter>
             <Routes>
@@ -20,4 +20,4 @@ function Router() {
     )
 }
 
-export default Router;
+export default App;
