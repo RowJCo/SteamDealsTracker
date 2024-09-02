@@ -88,7 +88,7 @@ app.listen(process.env.SERVER_PORT, () => {
 });
 
 //Cron jobs
-cron.schedule("08 02 * * *", async () => {
+cron.schedule("33 15 * * *", async () => {
     console.log("Updating game data");
     gameData();
 });
