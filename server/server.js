@@ -3,6 +3,9 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cron from "node-cron";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import gameData from "./workers/gameData.js";
 import gamePrices from "./workers/gamePrices.js";
 import emailAlert from "./workers/emailAlert.js";
@@ -19,6 +22,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('build'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //for local development only
 app.get("/api/setupDB", async (req, res) => {
@@ -38,6 +43,7 @@ app.get("/api/setupDB", async (req, res) => {
                         user_game_id SERIAL PRIMARY KEY,
                         user_id INT REFERENCES users(user_id),
                         game_id INT REFERENCES games(game_id),
+                        game_name TEXT REFERENCES games(game_name),
                         buyprice INTEGER NOT NULL
                     );
                 `;
@@ -52,20 +58,20 @@ app.get("/api/setupDB", async (req, res) => {
 //Routes
 
 //User routes
-app.post("/api/signup", userController.signUp);
-app.post("/api/signin", userController.signIn);
-app.get("/api/signout", userController.signOut);
-app.get("/api/checkauth", checkAuth, userController.checkAuth);
+app.post("/api/sign-up", userController.signUp);
+app.post("/api/sign-in", userController.signIn);
+app.get("/api/sign-out", userController.signOut);
+app.get("/api/check-auth", checkAuth, userController.checkAuth);
 
 //Game routes
 app.get("/api/games", gameController.getGames);
 app.get("/api/games/:game_name", gameController.getGame);
 
 //User game routes
-app.get("/api/usergames", checkAuth, userGameController.getUserGames);
-app.post("/api/usergames", checkAuth, userGameController.addUserGame);
-app.put("/api/usergames/:user_game_id", checkAuth, userGameController.updateUserGame);
-app.delete("/api/usergames/:user_game_id", checkAuth, userGameController.deleteUserGame);
+app.get("/api/user-games", checkAuth, userGameController.getUserGames);
+app.post("/api/user-games", checkAuth, userGameController.addUserGame);
+app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUserGame);
+app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
 
 //Handles Static files
 app.get('/*', function(req, res) {
@@ -82,7 +88,7 @@ app.listen(process.env.SERVER_PORT, () => {
 });
 
 //Cron jobs
-cron.schedule("08 02 * * *", async () => {
+cron.schedule("33 15 * * *", async () => {
     console.log("Updating game data");
     gameData();
 });

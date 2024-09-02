@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "This is a web app that allows you to receive email alerts when a game goes under a specific price.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cd client && npm install && npm run build && cd .. && cd server && npm install",
+    "start": "cd server && npm start"
   },
   "author": "Rowen Collier",
   "license": "MIT"

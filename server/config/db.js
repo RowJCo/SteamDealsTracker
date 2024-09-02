@@ -3,11 +3,11 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 const pool = new Pool({
-    host: "localhost",
-    database: "postgres",
-    user: "postgres",
-    password: "password",
-    port: 5432,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
 });
 
 export default pool;
