@@ -18,12 +18,14 @@ const gamePrices = async () => {
             const data = await response.json();
             for (const key of Object.keys(data)) {
                 const game = data[key];
-                if (game.success) {
+                if (game.success && game.data.price_overview) {
                     const price = game.data.price_overview.final;
                     console.log("Updating price for game: " + key + " to " + price);
                     const query = "UPDATE games SET price = $1 WHERE game_id = $2";
                     const values = [price, key];
                     await pool.query(query, values);
+                } else {
+                    console.log(`Price overview not available for game: ${key}`);
                 }
             }
         }       
