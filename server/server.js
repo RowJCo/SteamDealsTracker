@@ -91,23 +91,14 @@ app.listen(process.env.SERVER_PORT, () => {
 cron.schedule("44 16 * * *", async () => {
     console.log("Updating game data");
     gameData();
-}, {
-   scheduled: true,
-   timezone: "Europe/London"
- });
+});
 
 cron.schedule("09 17 * * *", async () => {
     console.log("Checking game prices");
     gamePrices();
-}, {
-   scheduled: true,
-   timezone: "Europe/London"
- });
+});
 
 cron.schedule("43 17 * * *", async () => {
     console.log("Sending email alerts");
     emailAlert();
-}, {
-   scheduled: true,
-   timezone: "Europe/London"
- });
+});
