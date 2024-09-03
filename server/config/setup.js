@@ -1,5 +1,4 @@
-import pool from "./config/db.js";
-
+import pool from './db.js';
 
 const setup = async () => {
         try {
