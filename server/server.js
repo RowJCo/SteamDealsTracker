@@ -9,7 +9,7 @@ import { dirname } from 'path';
 import gameData from "./workers/gameData.js";
 import gamePrices from "./workers/gamePrices.js";
 import emailAlert from "./workers/emailAlert.js";
-import pool from "./config/db.js";
+import setup from "./config/setup.js";
 import checkAuth from "./middleware/checkAuth.js";
 import userController from "./controllers/userController.js";
 import gameController from "./controllers/gameController.js";
@@ -24,36 +24,6 @@ app.use(cookieParser());
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-//for local development only
-app.get("/api/setupDB", async (req, res) => {
-    try {
-        const query = `
-                    CREATE TABLE IF NOT EXISTS users (
-                        user_id SERIAL PRIMARY KEY,
-                        email TEXT UNIQUE NOT NULL,
-                        password TEXT NOT NULL
-                    );
-                    CREATE TABLE IF NOT EXISTS games (
-                        game_id INTEGER PRIMARY KEY,
-                        game_name TEXT UNIQUE NOT NULL,
-                        price INTEGER NULL
-                    );
-                    CREATE TABLE IF NOT EXISTS users_games (
-                        user_game_id SERIAL PRIMARY KEY,
-                        user_id INT REFERENCES users(user_id),
-                        game_id INT REFERENCES games(game_id),
-                        game_name TEXT REFERENCES games(game_name),
-                        buyprice INTEGER NOT NULL
-                    );
-                `;
-        await pool.query(query);
-        res.send("Tables created");
-    } catch (error) {
-        console.error(error.message);
-        res.send("Tables not created");
-    }
-});
 
 //Routes
 
@@ -74,7 +44,7 @@ app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUse
 app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
 
 //Handles Static files
-app.get('/*', function(req, res) {
+app.get('/*', function(_, res) {
     res.sendFile(path.join(__dirname, '/build/index.html'), function(err) {
       if (err) {
         res.status(500).send(err)
@@ -85,20 +55,34 @@ app.get('/*', function(req, res) {
 //Starts the server
 app.listen(process.env.SERVER_PORT, () => {
     console.log("Server is running on port "+process.env.SERVER_PORT);
+    //initialises database and game data upon server start
+    try {
+        setup();
+        console.log("Tables created");
+    }
+    catch (error) {
+        console.error("Error setting up tables");
+    }
+    try {
+        gameData();
+    }
+    catch (error) {
+        console.error("Error updating game data");
+    }
 });
 
 //Cron jobs
-cron.schedule("44 16 * * *", async () => {
+cron.schedule("27 11 * * *", async () => {
     console.log("Updating game data");
     gameData();
 });
 
-cron.schedule("09 17 * * *", async () => {
+cron.schedule("40 11 * * *", async () => {
     console.log("Checking game prices");
     gamePrices();
 });
 
-cron.schedule("43 17 * * *", async () => {
+cron.schedule("44 11 * * *", async () => {
     console.log("Sending email alerts");
     emailAlert();
 });
