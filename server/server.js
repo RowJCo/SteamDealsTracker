@@ -42,6 +42,7 @@ app.get("/api/user-games", checkAuth, userGameController.getUserGames);
 app.post("/api/user-games", checkAuth, userGameController.addUserGame);
 app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUserGame);
 app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
+app.delete("/api/user-games/", checkAuth, userGameController.deleteUsersUserGames);
 
 //Handles Static files
 app.get('/*', function(_, res) {
