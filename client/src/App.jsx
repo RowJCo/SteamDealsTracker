@@ -7,7 +7,7 @@ import SignOutPage from './pages/SignOutPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 
 
-function App() {
+const App = () => {
     return(
         <BrowserRouter>
             <Routes>
