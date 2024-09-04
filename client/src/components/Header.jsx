@@ -14,7 +14,7 @@ const Header = () => {
                 </div>
                 <nav className="space-x-4">
                     <Link to="/dashboard" className="hover:text-gray-400">Dashboard</Link>
-                    <Link to "/settings" className="hover:text-gray-400">Settings</Link>
+                    <Link to="/settings" className="hover:text-gray-400">Settings</Link>
                     <Link to="/sign-in" className="hover:text-gray-400">Sign In</Link>
                     <Link to="/sign-up" className="hover:text-gray-400">Sign Up</Link>
                     <Link to="/sign-out" className="hover:text-gray-400">Sign Out</Link>
