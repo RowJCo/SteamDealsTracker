@@ -83,6 +83,20 @@ const userStore = create((set) => ({
             set({ signedIn: false });
         }
     },
+    deleteUser: async () => {
+        try {
+            await fetch("/api/delete-user", {
+                method: 'DELETE',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            set({ signedIn: false });
+        } catch (error) {
+            console.log("Unable to delete user");
+        }
+    },
 }));
 
 export default userStore;
