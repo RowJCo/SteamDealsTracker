@@ -29,6 +29,20 @@ const UserGameDisplay = () => {
                                 <p className="text-gray-600">{data.game_name}</p>
                                 <h3 className="text-lg font-semibold text-gray-700">Buy Price</h3>
                                 <p className="text-gray-600">{data.buyprice}</p>
+                                <div className="flex space-x-2 mt-4">
+                                    <button 
+                                        className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-red-600"
+                                        onClick={() => store.deleteUserGame(data.user_game_id)}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button 
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-600"
+                                        onClick={() => store.toggleUpdate(data)}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
                             </div>
                         );
                     })}
