@@ -13,6 +13,7 @@ const SettingsPage = () => {
     try {
         storeOne.deleteUsersUserGames();
         storeTwo.deleteUser();
+        storeTwo.signOut();
     } catch (error) {
         console.error("Error deleting user account and games:", error);
     }
