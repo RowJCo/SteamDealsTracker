@@ -16,7 +16,7 @@ const App = () => {
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/sign-in" element={<SignInPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
-                <Route path="/sign-out" element={<SignOutPage />}/>
+                <Route path="/sign-out" element={<SignOutPage />} />
             </Routes>
         </BrowserRouter>
     )
