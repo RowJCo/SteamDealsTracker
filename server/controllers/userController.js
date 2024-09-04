@@ -64,4 +64,17 @@ const checkAuth = async (req, res) => {
     }
 };
 
-export default { signUp, signIn, signOut, checkAuth };
+const deleteUser = async (req, res) => {
+    try {
+        const { user_id } = req;
+        const query = "DELETE FROM users WHERE user_id = $1";
+        const values = [user_id];
+        await pool.query(query, values);
+        res.status(200).json({ message: "User deleted" });
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+export default { signUp, signIn, signOut, checkAuth, deleteUser };
