@@ -32,6 +32,7 @@ app.post("/api/sign-up", userController.signUp);
 app.post("/api/sign-in", userController.signIn);
 app.get("/api/sign-out", userController.signOut);
 app.get("/api/check-auth", checkAuth, userController.checkAuth);
+app.delete("/api/del-user", checkAuth, userController.deleteUser);
 
 //Game routes
 app.get("/api/games", gameController.getGames);
@@ -42,6 +43,7 @@ app.get("/api/user-games", checkAuth, userGameController.getUserGames);
 app.post("/api/user-games", checkAuth, userGameController.addUserGame);
 app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUserGame);
 app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
+app.delete("/api/user-games/", checkAuth, userGameController.deleteUsersUserGames);
 
 //Handles Static files
 app.get('/*', function(_, res) {

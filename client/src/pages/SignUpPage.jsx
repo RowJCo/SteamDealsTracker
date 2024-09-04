@@ -3,7 +3,7 @@ import SignUpForm from "../components/SignUpForm.jsx";
 import Footer from "../components/Footer.jsx";
 
 
-function SignUpPage() {
+const SignUpPage = () => {
     return (
         <div>
             <Header />

@@ -60,4 +60,17 @@ const deleteUserGame = async (req, res) => {
     }
 };
 
-export default { getUserGames, addUserGame, updateUserGame, deleteUserGame };
+const deleteUsersUserGames = async (req, res) => {
+    try {
+        const { user_id } = req;
+        const query = "DELETE FROM users_games WHERE user_id = $1";
+        const values = [user_id];
+        await pool.query(query, values);
+        res.status(200).json({ message: "All users user games deleted" });
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+export default { getUserGames, addUserGame, updateUserGame, deleteUserGame, deleteUsersUserGames };
