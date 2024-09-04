@@ -77,6 +77,20 @@ const gameStore = create((set) => ({
             console.log("Unable to delete user game");
         }
     },
+    deleteUsersUserGames: async (user_id) => {
+        try {
+            // Deletes all the user games from the server for a specific user
+            await fetch("/api/user-games/",{
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        } catch (error) {
+            console.log("Unable to delete user games for user");
+        }
+    },
     toggleUpdate: (user_game_id, user_id, game_id, game_name, buyprice) => {
         //toggles the updateForm
         set({ update: !gameStore.getState().update,
