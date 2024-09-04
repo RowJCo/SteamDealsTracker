@@ -6,10 +6,13 @@ import userStore from '../stores/userStore.js';
 
 const SettingsPage = () => {
 
+  storeOne = gameStore();
+  storeTwo = userStore();
+
   const handleDeleteAccount = async () => {
     try {
-        await gameStore.deleteUsersUserGames();
-        await userStore.deleteUser();
+        storeOne.deleteUsersUserGames();
+        storeTwo.deleteUser();
     } catch (error) {
         console.error("Error deleting user account and games:", error);
     }
