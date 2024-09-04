@@ -6,8 +6,8 @@ import userStore from '../stores/userStore.js';
 
 const SettingsPage = () => {
 
-  storeOne = gameStore();
-  storeTwo = userStore();
+  const storeOne = gameStore();
+  const storeTwo = userStore();
 
   const handleDeleteAccount = async () => {
     try {
