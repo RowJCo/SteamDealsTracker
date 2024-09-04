@@ -85,7 +85,7 @@ const userStore = create((set) => ({
     },
     deleteUser: async () => {
         try {
-            await fetch("/api/delete-user", {
+            await fetch("/api/del-user", {
                 method: 'DELETE',
                 credentials: "include",
                 headers: {
