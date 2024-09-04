@@ -4,7 +4,7 @@ import UserGameDisplay from "../components/UserGameDisplay.jsx";
 import UserGameForm from "../components/UserGameForm.jsx";
 import RequireAuth from "../components/RequireAuth.jsx";
 
-function DashboardPage() {
+const DashboardPage = () => {
     return (
         <div>
             <Header />
