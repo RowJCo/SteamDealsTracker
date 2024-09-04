@@ -4,7 +4,7 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import userStore from "../stores/userStore.js";
 
-function SignOutPage() {
+const SignOutPage = () => {
     const store = userStore();
     const [initialized, setInitialized] = useState(false);
 
