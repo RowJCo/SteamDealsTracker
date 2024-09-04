@@ -32,6 +32,7 @@ app.post("/api/sign-up", userController.signUp);
 app.post("/api/sign-in", userController.signIn);
 app.get("/api/sign-out", userController.signOut);
 app.get("/api/check-auth", checkAuth, userController.checkAuth);
+app.delete("/api/del-user", checkAuth, userController.deleteUser);
 
 //Game routes
 app.get("/api/games", gameController.getGames);
