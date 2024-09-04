@@ -73,4 +73,4 @@ const deleteUsersUserGames = async (req, res) => {
     }
 };
 
-export default { getUserGames, addUserGame, updateUserGame, deleteUserGame };
+export default { getUserGames, addUserGame, updateUserGame, deleteUserGame, deleteUsersUserGames };
