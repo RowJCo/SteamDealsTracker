@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cron from "node-cron";
+import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -15,6 +16,8 @@ import userController from "./controllers/userController.js";
 import gameController from "./controllers/gameController.js";
 import userGameController from "./controllers/userGameController.js";
 
+//sets up environment variables
+
 dotenv.config()
 
 //Sets up the express app
@@ -24,6 +27,18 @@ app.use(cookieParser());
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+//sets up rate limiting
+
+var RateLimit = require('express-rate-limit');
+var limiter = RateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // limit each IP to 100 requests per windowMs
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+})
+
+app.use(limiter);
 
 //Routes
 
@@ -74,15 +89,22 @@ app.listen(process.env.SERVER_PORT, () => {
 });
 
 //Cron jobs
+
+//gets the steam game data every day to update new games
+
 cron.schedule("27 11 * * *", async () => {
     console.log("Updating game data");
     gameData();
 });
 
+//checks the game prices of user games every day
+
 cron.schedule("40 11 * * *", async () => {
     console.log("Checking game prices");
     gamePrices();
 });
+
+//sends email alerts if the user's game price is below the threshold
 
 cron.schedule("44 11 * * *", async () => {
     console.log("Sending email alerts");
