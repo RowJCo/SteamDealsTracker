@@ -16,7 +16,7 @@ const SignUpForm = () => {
       setError('Failed to sign up. Please check your details and try again.');
     }
     // if error is empty
-    if (!error) {
+    if (error === "") {
       navigate("/sign-in"); 
     }
   };
