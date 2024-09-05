@@ -5,11 +5,17 @@ import userStore from '../stores/userStore.js';
 const SignUpForm = () => {
   const store = userStore();
   const navigate = useNavigate();
+  const [error, setError] = React.useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await store.signUp();
-    navigate("/sign-in");
+    setError("");
+    try {
+      await store.signUp();
+      navigate("/sign-in");
+    } catch (err) {
+      setError('Failed to sign up. Please check your details and try again.');
+    }
   };
 
   return (

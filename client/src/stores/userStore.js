@@ -9,6 +9,7 @@ const userStore = create((set) => ({
         email: "",
         password: "",
     },
+    signedIn: false,
     updateSignInForm: (e) => {
         try {
             set((state) => ({ signInForm: { ...state.signInForm, [e.target.name]: e.target.value } }));

@@ -5,11 +5,17 @@ import userStore from '../stores/userStore';
 const SignInForm = () => {
   const store = userStore();
   const navigate = useNavigate();
+  const [error, setError] = React.useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await store.signIn();
-    navigate("/dashboard");
+    setError("");
+    try {
+      await store.signIn();
+      navigate("/dashboard");
+    } catch (err) {
+      setError('Failed to sign in. Please check your details and try again.');
+    }
   };
 
   return (
@@ -51,6 +57,7 @@ const SignInForm = () => {
               Submit
             </button>
           </div>
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>
       </div>
     </div>
