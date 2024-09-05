@@ -12,9 +12,12 @@ const SignUpForm = () => {
     setError("");
     try {
       await store.signUp();
-      navigate("/sign-in");
     } catch (err) {
       setError('Failed to sign up. Please check your details and try again.');
+    }
+    // if error is empty
+    if (!error) {
+      navigate("/sign-in"); 
     }
   };
 
