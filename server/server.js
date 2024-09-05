@@ -30,7 +30,7 @@ const __dirname = dirname(__filename);
 
 //sets up rate limiting
 
-var limiter = RateLimit({
+var limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
 	limit: 100, // limit each IP to 100 requests per windowMs
 	standardHeaders: 'draft-7',
