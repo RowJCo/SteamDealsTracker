@@ -57,6 +57,7 @@ const SignUpForm = () => {
               Sign Up
             </button>
           </div>
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>
       </div>
     </div>
