@@ -30,7 +30,7 @@ const signIn = async (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const expiration = 1000 * 60 * 60 * 24;
+        const expiration = 21600000;
         const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: expiration });
         res.cookie('Authorization', token, { 
             httpOnly: true,
