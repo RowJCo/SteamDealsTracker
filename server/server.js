@@ -1,6 +1,9 @@
 //Imports dependencies
 import express from "express";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import session from "express-session";
+import csrf from "csurf";
 import dotenv from "dotenv";
 import cron from "node-cron";
 import rateLimit from "express-rate-limit";
@@ -24,6 +27,9 @@ dotenv.config()
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: process.env.JWT_SECRET, cookie: { maxAge: 60000 } }));
+app.use(csrf());
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
