@@ -1,5 +1,7 @@
+//Imports dependencies
 import jwt from 'jsonwebtoken';
 
+//Checks if the user is authenticated by verifying the token
 const checkAuth = async (req, res, next) => {
     try {
         const token = req.cookies.Authorization;

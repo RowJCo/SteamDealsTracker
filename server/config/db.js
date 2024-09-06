@@ -1,10 +1,14 @@
+//Imports dependencies
 import dotenv from "dotenv";
 import pkg from "pg";
 
+//Configures the environment variables
 dotenv.config()
 
+//Extracts the Pool object from the pg package
 const { Pool } = pkg;
 
+//Creates a new Pool object with the database configuration
 const pool = new Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,

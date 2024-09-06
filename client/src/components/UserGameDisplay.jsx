@@ -1,3 +1,4 @@
+//Imports dependencies
 import React from 'react';
 import { useState } from 'react';
 import gameStore from '../stores/gameStore.js';
@@ -6,15 +7,20 @@ const UserGameDisplay = () => {
     const store = gameStore();
     const [initialized, setInitialized] = useState(false);
 
+    //fetches the user's games when the component is first mounted
     if (!initialized) {
         store.fetchUserGames();
         setInitialized(true);
     }
+
+    //if the component has been initialised, fetch the user's games again after 30 seconds
     if (initialized) {
         setTimeout(() => {
             store.fetchUserGames();
         }, 30000);
     }
+
+    //renders the games the user is waiting for
     return (
         <div className="min-h-75% bg-gray-100 flex flex-col items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">

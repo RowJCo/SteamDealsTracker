@@ -1,3 +1,4 @@
+//Imports dependencies
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import RequireAuth from "../components/RequireAuth.jsx";
@@ -9,6 +10,7 @@ const SettingsPage = () => {
   const storeOne = gameStore();
   const storeTwo = userStore();
 
+  //a function that runs a series of functions to delete the user account and any user games associated with it
   const handleDeleteAccount = async () => {
     try {
         storeOne.deleteUsersUserGames();
@@ -19,6 +21,7 @@ const SettingsPage = () => {
     }
   };
 
+  //renders the settings page with the header , fotoer and a button to delete the user account
   return (
     <div>
       <Header />

@@ -1,5 +1,7 @@
+//Imports dependencies
 import pool from "../config/db.js";
 
+//collects all user games from the database
 const getUserGames = async (req, res) => {
     try {
         const { user_id } = req;
@@ -17,6 +19,7 @@ const getUserGames = async (req, res) => {
     }
 };
 
+//adds a user game to the database
 const addUserGame = async (req, res) => {
     try {
         const { user_id } = req;
@@ -31,6 +34,7 @@ const addUserGame = async (req, res) => {
     }
 };
 
+//updates a user game in the database
 const updateUserGame = async (req, res) => {
     try {
         const { user_id } = req;
@@ -46,6 +50,7 @@ const updateUserGame = async (req, res) => {
     }
 };
 
+//deletes a user game from the database
 const deleteUserGame = async (req, res) => {
     try {
         const { user_id } = req;
@@ -60,6 +65,7 @@ const deleteUserGame = async (req, res) => {
     }
 };
 
+//deletes all user games from the database for a specific user
 const deleteUsersUserGames = async (req, res) => {
     try {
         const { user_id } = req;

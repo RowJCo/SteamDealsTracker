@@ -1,6 +1,8 @@
+//Imports dependencies
 import { create } from 'zustand';
 
 const gameStore = create((set) => ({
+    //initialises the data structures for the game store
     allGames: [],
     userGames: [],
     update:false,
@@ -16,9 +18,9 @@ const gameStore = create((set) => ({
         game_name: null,
         buyprice: "",
     },
+    //fetches all the steam games from the server
     fetchAllGames: async () => {
         try{
-            //gets all the games from the server
             const response = await fetch("/api/games");
             const data = await response.json();
             set({ allGames: data });
@@ -26,9 +28,9 @@ const gameStore = create((set) => ({
             console.log("Unable to fetch all games");
         }
     },
+    //fetches the user's games from the server
     fetchUserGames: async () => {
         try{
-            //gets the user games from the server
             const response = await fetch("/api/user-games", {
                 method: 'GET',
                 credentials: "include",
@@ -42,12 +44,14 @@ const gameStore = create((set) => ({
             console.log("Unable to fetch user games");
         }
     },
+    //creates a new user game on the server
     createUserGame: async (e) => {
         try {
             e.preventDefault();
-            //gets the gameName and then uses this to set the game_id in the createForm
             const { createForm } = gameStore.getState();
+            //uses the gameName to set the game_id in the createForm
             const game = gameStore.getState().allGames.find(game => game.game_name === gameStore.getState().createForm.game_name);            createForm.game_id = game.game_id;
+            //updates the createForm
             set({ createForm });
             //sends the createForm to the server
             await fetch("/api/user-games", {
@@ -58,11 +62,13 @@ const gameStore = create((set) => ({
                 },
                 body: JSON.stringify(createForm),
             });
+            //resets the createForm
             set({ createForm: { game_id: "", game_name:"", buyprice: "" }});
         } catch (error) {
             console.log("Unable to create user game");
         }
     },
+    //deletes a user game from the server
     deleteUserGame: async (user_game_id) => {
         try {
             //deletes the user game from the server
@@ -77,9 +83,9 @@ const gameStore = create((set) => ({
             console.log("Unable to delete user game");
         }
     },
+    // deletes all the user games from the server for a specific user
     deleteUsersUserGames: async (user_id) => {
         try {
-            // Deletes all the user games from the server for a specific user
             await fetch("/api/user-games/",{
                 method: "DELETE",
                 credentials: "include",
@@ -91,6 +97,7 @@ const gameStore = create((set) => ({
             console.log("Unable to delete user games for user");
         }
     },
+    //toggles the updateForm
     toggleUpdate: (user_game_id, user_id, game_id, game_name, buyprice) => {
         //toggles the updateForm
         set({ update: !gameStore.getState().update,
@@ -103,6 +110,7 @@ const gameStore = create((set) => ({
             }
          });
     },
+    //updates the user game on the server
     updateUserGame: async (e) => {
         try {
             e.preventDefault();
@@ -129,8 +137,8 @@ const gameStore = create((set) => ({
             console.log("Unable to update user game");
         }
     },
+    //updates the createForm to be whatever the user types in the input field
     updateCreateFormField: (e) => {
-        //updates the createForm
         try {
             const { createForm } = gameStore.getState();
             set({ 
@@ -143,6 +151,7 @@ const gameStore = create((set) => ({
             console.log("Unable to update create form field");
         }
     },
+    //updates the updateForm to be whatever the user types in the input field
     handleUpdateFieldChange: (e) => {
         //updates the updateForm
         try {

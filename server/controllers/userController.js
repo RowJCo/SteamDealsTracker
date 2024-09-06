@@ -1,7 +1,9 @@
+//Imports dependencies
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
 
+//Creates a new user
 const signUp = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -16,6 +18,7 @@ const signUp = async (req, res) => {
     }
 };
 
+//Signs a user in and creates a token
 const signIn = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -46,6 +49,7 @@ const signIn = async (req, res) => {
     }
 };
 
+//Signs a user out by clearing the cookie
 const signOut = async (req, res) => {
     try {
         res.clearCookie('Authorization');
@@ -55,6 +59,7 @@ const signOut = async (req, res) => {
     }
 };
 
+//Checks if a user is authenticated
 const checkAuth = async (req, res) => {
     try {
         res.status(200).json({ message: 'User is authenticated' });
@@ -64,6 +69,7 @@ const checkAuth = async (req, res) => {
     }
 };
 
+//Deletes a user
 const deleteUser = async (req, res) => {
     try {
         const { user_id } = req;

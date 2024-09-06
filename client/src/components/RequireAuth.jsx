@@ -1,16 +1,19 @@
+//Imports dependencies
 import userStore from '../stores/userStore.js';
 import { useState } from 'react';
 
 const RequireAuth = (props) => {
+
     const store = userStore();
     const [initialized, setInitialized] = useState(false);
 
+    //checks if the user is signed in when the component is first mounted
     if (!initialized) {
-        // checkAuth when the component is first mounted
         store.checkAuth();
         setInitialized(true);
     }
 
+    //if the user is not signed in and the component has been initialised, checkAuth again after 30 seconds
     if (initialized && store.signedIn === false) {
         // wait 30 seconds and checkAuth again to see if the user has signed in since the component was mounted
         setTimeout(() => {

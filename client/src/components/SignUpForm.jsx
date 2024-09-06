@@ -1,3 +1,4 @@
+//Imports dependencies
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import userStore from '../stores/userStore.js';
@@ -7,6 +8,7 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
 
+  //signs the user up when the form is submitted unless there is an error
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -20,7 +22,7 @@ const SignUpForm = () => {
       setError('Sign up successful! Head to the sign in page to log in.');
     }
   };
-
+  //renders the sign up form
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
