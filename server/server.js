@@ -33,8 +33,7 @@ const __dirname = dirname(__filename);
 var limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
 	limit: 100, // limit each IP to 100 requests per windowMs
-	standardHeaders: 'draft-7',
-	legacyHeaders: false,
+	skipFailedRequests : true
 })
 
 app.set('trust proxy', 1 /* number of proxies between user and server */)
