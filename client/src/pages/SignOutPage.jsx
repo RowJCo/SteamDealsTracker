@@ -1,5 +1,5 @@
-import { useState } from 'react'; // Add this line
-
+//Imports dependencies
+import { useState } from 'react';
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import userStore from "../stores/userStore.js";
@@ -8,6 +8,7 @@ const SignOutPage = () => {
     const store = userStore();
     const [initialized, setInitialized] = useState(false);
 
+    //when the component is first mounted, sign the user out
     if (!initialized) {
         store.signOut();
         setInitialized(true);

@@ -1,6 +1,8 @@
+//Imports dependencies
 import React from 'react';
 
 const Home = () => {
+  //renders the home page explaining what the site does
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-2xl text-center">

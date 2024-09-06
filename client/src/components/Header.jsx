@@ -1,8 +1,10 @@
+//Imports dependencies
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Header = () => {
+    //renders the header with the logo and links to the dashboard, settings, sign in, sign up and sign out pages
     return (
         <header className="bg-gray-800 text-white py-4">
             <div className="container mx-auto px-4 flex justify-between items-center ">

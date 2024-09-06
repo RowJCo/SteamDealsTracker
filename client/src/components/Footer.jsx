@@ -1,6 +1,8 @@
+//Imports dependencies
 import React from 'react';
 
 const Footer = () => {
+  //renders the footer with a disclaimer
   return (
     <footer className="bg-gray-800 text-white py-4">
       <div className="container mx-auto px-4 flex justify-between items-center ">

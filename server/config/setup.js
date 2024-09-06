@@ -1,5 +1,7 @@
+//Imports dependencies
 import pool from './db.js';
 
+//Creates the tables needed for the application
 const setup = async () => {
         try {
             const query = `

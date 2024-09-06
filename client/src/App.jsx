@@ -1,3 +1,4 @@
+//Imports dependencies
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
@@ -8,6 +9,7 @@ import DashboardPage from './pages/DashboardPage.jsx';
 
 
 const App = () => {
+    //renders the app with the browser router and routes
     return(
         <BrowserRouter>
             <Routes>

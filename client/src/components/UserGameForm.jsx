@@ -1,3 +1,4 @@
+//Imports dependencies
 import React from 'react';
 import { useState } from 'react';
 import gameStore from '../stores/gameStore.js';
@@ -8,6 +9,7 @@ const UserGameForm = () => {
     const [filteredGames, setFilteredGames] = useState([]);
 
 
+    //fetches user games and a slice of all games when the component is first mounted so as to reduce lag
     if (!initialized) {
         store.fetchUserGames();
         store.fetchAllGames().then(() => {
@@ -17,19 +19,23 @@ const UserGameForm = () => {
         });
         setInitialized(true);
     }
+
+    //if the component has been initialised, fetch the user's games again after 30 seconds
     if (initialized) {
         setTimeout(() => {
             store.fetchUserGames();
         }, 30000);
     }
 
+    //filters the games based on the user's search term
     const handleGameNameChange = (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filtered = store.allGames.filter(game => game.game_name.toLowerCase().includes(searchTerm));
-        setFilteredGames(filtered.slice(0, 500));
+        const searchTerm = e.target.value.toLowerCase();// Convert the search term to lowercase
+        const filtered = store.allGames.filter(game => game.game_name.toLowerCase().includes(searchTerm)); // Filter the games based on the search term
+        setFilteredGames(filtered.slice(0, 500)); // Set the filtered games to the first 500 games to reduce lag
         store.updateCreateFormField(e); // Call the original handler for updating the form field
     };
     
+    //renders the form to create or update the games the user is waiting to go on sale
     return (
         <div className=" min-h-50% bg-gray-100 flex flex-col items-center justify-center">
             {store.update === true && (

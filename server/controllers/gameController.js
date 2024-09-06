@@ -1,5 +1,7 @@
+//Imports dependencies
 import pool from "../config/db.js";
 
+//collects all steam games from the database
 const getGames = async (req, res) => {
     try {
         const query = "SELECT * FROM games";
@@ -11,6 +13,7 @@ const getGames = async (req, res) => {
     }
 };
 
+//collects a specific steam game from the database
 const getGame = async (req, res) => {
     try {
         const { game_name } = req.params;
