@@ -12,12 +12,13 @@ const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    await store.signIn();
-    if (!store.signedIn) {
+    try {
+      await store.signIn();
+    } catch(err) {
       setError('Failed to sign in. Please check your details and try again.');
     }
-    if (store.signedIn) {
-      navigate("/dashboard");
+    if (error === "") {
+      setError('Sign in successful! Head to the dashboard.');
     }
   };
   //renders the sign in form
