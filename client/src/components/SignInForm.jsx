@@ -14,11 +14,9 @@ const SignInForm = () => {
     setError("");
     try {
       await store.signIn();
-    } catch(err) {
-      setError('Failed to sign in. Please check your details and try again.');
-    }
-    if (error === "") {
       setError('Sign in successful! Head to the dashboard.');
+    } catch (error) {
+      setError('Failed to sign in. Please check your details and try again.');
     }
   };
   //renders the sign in form
