@@ -7,16 +7,21 @@ const SignInForm = () => {
   const store = userStore();
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
+  const [success, setSuccess] = React.useState("");
 
   //signs the user in when the form is submitted unless there is an error
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     try {
       await store.signIn();
-      setError('Sign in successful! Head to the dashboard.');
+      setSuccess('Sign in successful! Head to the dashboard.');
+      console.log("Signed in")
     } catch (error) {
+      setSuccess("");
       setError('Failed to sign in. Please check your details and try again.');
+      console.log("Failed to sign in")
     }
   };
   //renders the sign in form
@@ -60,6 +65,7 @@ const SignInForm = () => {
             </button>
           </div>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {success && <p className="text-green-500 text-sm text-center">{success}</p>}
         </form>
       </div>
     </div>

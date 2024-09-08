@@ -7,15 +7,20 @@ const SignUpForm = () => {
   const store = userStore();
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
+  const [success, setSuccess] = React.useState("");
 
   //signs the user up when the form is submitted unless there is an error
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     try {
       await store.signUp();
-      setError('Sign up successful! Head to the sign in page to log in.');
+      setSuccess('Sign up successful! Head to the sign in page to log in.');
+      console.log("Signed up")
     } catch (error) {
+      console.log("Failed to sign up")
+      setSuccess("");
       setError('Failed to sign up. Please check your details and try again.');
     }
   };
@@ -60,6 +65,7 @@ const SignUpForm = () => {
             </button>
           </div>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {success && <p className="text-green-500 text-sm text-center">{success}</p>}
         </form>
       </div>
     </div>
