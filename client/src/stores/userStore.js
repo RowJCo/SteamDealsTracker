@@ -56,7 +56,6 @@ const userStore = create((set) => ({
                 body: JSON.stringify(signUpForm),
             });
             set({ signedIn: false, signUpForm: { email: "", password: "" } });
-            console.log("Signed up");
         } catch (error) {
             console.log("Unable to sign up");
         }

@@ -15,14 +15,14 @@ const SignInForm = () => {
     setError("");
     try {
       const response = await store.signIn();
-      if (response.status === 400) {
+      if (response.status == 400) {
         console.log("Unable to sign in");
         return setError('Failed to sign in. Please check your details and try again.');
       }
-      navigate('/dashboard');
+      return navigate('/dashboard');
     } catch (error) {
       console.log("Unable to sign in");
-      setError('Failed to sign in. Please check your details and try again.');
+      return setError('Failed to sign in. Please check your details and try again.');
     }
   };
 
