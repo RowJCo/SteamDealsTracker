@@ -8,8 +8,7 @@ const getGames = async (req, res) => {
         const result = await pool.query(query);
         return res.status(200).json(result.rows);
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to get steam games" });
     }
 };
 
@@ -22,8 +21,7 @@ const getGame = async (req, res) => {
         const result = await pool.query(query, values);
         return res.status(200).json(result.rows);
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to get steam game" });
     }
 };
 

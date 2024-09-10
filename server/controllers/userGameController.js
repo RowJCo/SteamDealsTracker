@@ -14,8 +14,7 @@ const getUserGames = async (req, res) => {
         const result = await pool.query(query, values);
         return res.status(200).json(result.rows);
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to get user games" });
     }
 };
 
@@ -29,8 +28,7 @@ const addUserGame = async (req, res) => {
         await pool.query(query, values);
         return res.status(201).json({ message: "User game created" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to add user games" });
     }
 };
 
@@ -45,8 +43,7 @@ const updateUserGame = async (req, res) => {
         await pool.query(query, values);
         return res.status(200).json({ message: "User game updated" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to update user games" });
     }
 };
 
@@ -60,8 +57,7 @@ const deleteUserGame = async (req, res) => {
         await pool.query(query, values);
         return res.status(200).json({ message: "User game deleted" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to delete user game" });
     }
 };
 
@@ -74,8 +70,7 @@ const deleteUsersUserGames = async (req, res) => {
         await pool.query(query, values);
         return res.status(200).json({ message: "All users user games deleted" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to delete users user games" });
     }
 };
 

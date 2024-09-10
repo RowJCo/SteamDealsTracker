@@ -30,7 +30,7 @@ const gameData = async () => {
         }
         console.log("Game data updated");
     } catch (error) {
-        console.error(error.message);
+        console.error("Unable to update game data");
     }
 };
 

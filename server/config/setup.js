@@ -26,7 +26,6 @@ const setup = async () => {
             await pool.query(query);
             return "Tables created";
         } catch (error) {
-            console.error(error.message);
             return "Tables not created";
         }
 }

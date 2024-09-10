@@ -13,8 +13,7 @@ const signUp = async (req, res) => {
         await pool.query(query, values);
         return res.status(201).json({ message: "User created" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to sign up" });
     }
 };
 
@@ -43,7 +42,6 @@ const signIn = async (req, res) => {
             res.status(200).json({ message: 'Signed in' })
         );
     } catch (error) {
-        console.error(error.message);
         return res.status(400).json({ message: "Invalid credentials" });
     }
 };
@@ -56,8 +54,7 @@ const signOut = async (req, res) => {
             res.status(200).json({ message: 'Signed out' })
         );
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to sign out" });
     }
 };
 
@@ -80,8 +77,7 @@ const deleteUser = async (req, res) => {
         await pool.query(query, values);
         return res.status(200).json({ message: "User deleted" });
     } catch (error) {
-        console.error(error.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: "Unable to delete user" });
     }
 };
 

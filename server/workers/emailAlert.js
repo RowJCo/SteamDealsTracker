@@ -87,7 +87,7 @@ const emailAlert = async () => {
         });
         console.log("Email alerts sent");
     } catch (error) {
-        console.error(error.message);
+        console.log("Error sending email alerts");
     }
 };
 
