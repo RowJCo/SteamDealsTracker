@@ -14,7 +14,11 @@ const SignInForm = () => {
     e.preventDefault();
     setError("");
     try {
-      await store.signIn();
+      const response = await store.signIn();
+      if (!response.ok) {
+        console.log("Unable to sign in");
+        return setError('Failed to sign in. Please check your details and try again.');
+      }
       navigate('/dashboard');
     } catch (error) {
       console.log("Unable to sign in");
