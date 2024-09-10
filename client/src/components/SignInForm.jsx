@@ -15,7 +15,7 @@ const SignInForm = () => {
     setError("");
     try {
       const response = await store.signIn();
-      if (!response.ok) {
+      if (response.status === 400) {
         console.log("Unable to sign in");
         return setError('Failed to sign in. Please check your details and try again.');
       }
