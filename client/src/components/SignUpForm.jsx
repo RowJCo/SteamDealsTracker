@@ -16,12 +16,11 @@ const SignUpForm = () => {
     setSuccess("");
     try {
       await store.signUp();
-      setSuccess('Sign up successful! Head to the sign in page to log in.');
-      console.log("Signed up")
+      return setSuccess('Sign up successful! Head to the sign in page to log in.');
+      
     } catch (error) {
-      console.log("Failed to sign up")
       setSuccess("");
-      setError('Failed to sign up. Please check your details and try again.');
+      return setError('Failed to sign up. Please check your details and try again.');
     }
   };
   //renders the sign up form

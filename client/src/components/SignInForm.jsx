@@ -16,12 +16,10 @@ const SignInForm = () => {
     setSuccess("");
     try {
       await store.signIn();
-      setSuccess('Sign in successful! Head to the dashboard.');
-      console.log("Signed in")
+      return setSuccess('Sign in successful! Head to the dashboard.');
     } catch (error) {
       setSuccess("");
-      setError('Failed to sign in. Please check your details and try again.');
-      console.log("Failed to sign in")
+      return setError('Failed to sign in. Please check your details and try again.');
     }
   };
   //renders the sign in form
