@@ -10,23 +10,24 @@ const SignInForm = () => {
   const [success, setSuccess] = React.useState("");
 
   //signs the user in when the form is submitted unless there is an error
-  const handleSubmit = async (e) => {
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     try {
       await store.signIn();
-      return setSuccess('Sign in successful! Head to the dashboard.');
+      navigate('/dashboard');
     } catch (error) {
-      setSuccess("");
-      return setError('Failed to sign in. Please check your details and try again.');
+      console.log("Unable to sign in");
+      setError('Failed to sign in. Please check your details and try again.');
     }
   };
+
   //renders the sign in form
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSignIn} className="space-y-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -63,7 +64,6 @@ const SignInForm = () => {
             </button>
           </div>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-          {success && <p className="text-green-500 text-sm text-center">{success}</p>}
         </form>
       </div>
     </div>

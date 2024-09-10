@@ -10,26 +10,21 @@ const SignUpForm = () => {
   const [success, setSuccess] = React.useState("");
 
   //signs the user up when the form is submitted unless there is an error
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     try {
-        const result = await store.signUp();
-        if (result === "error") {
-            return setError('Failed to sign up. Please check your details and try again.');
-        }
-        return setSuccess('Sign up successful! Head to the sign in page to log in.');
+      await store.signUp();
+      navigate('/sign-in');
     } catch (error) {
-        setSuccess("");
-        return setError('Failed to sign up. Please check your details and try again.');
+      console.log("Unable to sign up");
+      setError('Failed to sign up. Please check your details and try again.');
     }
-  };
   //renders the sign up form
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSignUp} className="space-y-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Sign Up</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -66,7 +61,6 @@ const SignUpForm = () => {
             </button>
           </div>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-          {success && <p className="text-green-500 text-sm text-center">{success}</p>}
         </form>
       </div>
     </div>
