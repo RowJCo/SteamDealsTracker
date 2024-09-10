@@ -14,10 +14,6 @@ const SignUpForm = () => {
     setError("");
     try {
       const response = await store.signUp();
-      if (response.status == 400) {
-        console.log("Unable to sign up");
-        return setError('Failed to sign up. Please check your details and try again.');
-      }
       navigate('/sign-in');
     } catch (error) {
       console.log("Unable to sign up");

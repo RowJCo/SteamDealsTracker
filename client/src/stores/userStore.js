@@ -38,6 +38,9 @@ const userStore = create((set) => ({
                 },
                 body: JSON.stringify(signInForm),
             });
+            if (response.status === 400) {
+                throw new Error("Error signing in");
+            }
             set({ signedIn: true, signInForm: { email: "", password: "" } });
         } catch (error) {
             console.log("Unable to sign in");
@@ -47,7 +50,7 @@ const userStore = create((set) => ({
     signUp: async () => {
         try {
             const { signUpForm } = userStore.getState();
-            await fetch("/api/sign-up", {
+            const response = await fetch("/api/sign-up", {
                 method: 'POST',
                 credentials: "include",
                 headers: {
@@ -55,6 +58,9 @@ const userStore = create((set) => ({
                 },
                 body: JSON.stringify(signUpForm),
             });
+            if (response.status === 400) {
+                throw new Error("Error signing up");
+            }
             set({ signedIn: false, signUpForm: { email: "", password: "" } });
         } catch (error) {
             console.log("Unable to sign up");
