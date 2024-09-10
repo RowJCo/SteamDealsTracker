@@ -10,10 +10,10 @@ const checkAuth = async (req, res, next) => {
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user_id = decoded.user_id;
-        next();
+        return next();
     } catch (error) {
         console.log(error);
-        res.status(401).json({ message: "Unable to check authorization" });
+        return res.status(401).json({ message: "Unable to check authorization" });
     }
 };
 

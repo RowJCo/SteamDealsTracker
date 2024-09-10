@@ -12,10 +12,10 @@ const getUserGames = async (req, res) => {
         `;
         const values = [user_id];
         const result = await pool.query(query, values);
-        res.status(200).json(result.rows);
+        return res.status(200).json(result.rows);
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
 
@@ -27,10 +27,10 @@ const addUserGame = async (req, res) => {
         const query = "INSERT INTO users_games (user_id, game_id, game_name, buyprice) VALUES ($1, $2, $3, $4) RETURNING *";
         const values = [user_id, game_id, game_name, buyprice];
         await pool.query(query, values);
-        res.status(201).json({ message: "User game created" });
+        return res.status(201).json({ message: "User game created" });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
 
@@ -43,10 +43,10 @@ const updateUserGame = async (req, res) => {
         const query = "UPDATE users_games SET buyprice = $1 WHERE user_id = $2 AND user_game_id = $3 RETURNING *";
         const values = [buyprice, user_id, user_game_id];
         await pool.query(query, values);
-        res.status(200).json({ message: "User game updated" });
+        return res.status(200).json({ message: "User game updated" });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
 
@@ -58,10 +58,10 @@ const deleteUserGame = async (req, res) => {
         const query = "DELETE FROM users_games WHERE user_id = $1 AND user_game_id = $2";
         const values = [user_id, user_game_id];
         await pool.query(query, values);
-        res.status(200).json({ message: "User game deleted" });
+        return res.status(200).json({ message: "User game deleted" });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
 
@@ -72,10 +72,10 @@ const deleteUsersUserGames = async (req, res) => {
         const query = "DELETE FROM users_games WHERE user_id = $1";
         const values = [user_id];
         await pool.query(query, values);
-        res.status(200).json({ message: "All users user games deleted" });
+        return res.status(200).json({ message: "All users user games deleted" });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
 
