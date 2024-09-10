@@ -7,7 +7,6 @@ const SignInForm = () => {
   const store = userStore();
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
-  const [success, setSuccess] = React.useState("");
 
   //signs the user in when the form is submitted unless there is an error
 
