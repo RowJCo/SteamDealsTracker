@@ -15,7 +15,10 @@ const SignUpForm = () => {
     setError("");
     setSuccess("");
     try {
-      await store.signUp();
+      const submit = await store.signUp();
+      if (submit === "error") {
+        return setError('Failed to sign up. Please check your details and try again.');
+      }
       return setSuccess('Sign up successful! Head to the sign in page to log in.');
       
     } catch (error) {
