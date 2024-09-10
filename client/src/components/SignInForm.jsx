@@ -19,10 +19,10 @@ const SignInForm = () => {
         console.log("Unable to sign in");
         return setError('Failed to sign in. Please check your details and try again.');
       }
-      return navigate('/dashboard');
+      navigate('/dashboard');
     } catch (error) {
       console.log("Unable to sign in");
-      return setError('Failed to sign in. Please check your details and try again.');
+      setError('Failed to sign in. Please check your details and try again.');
     }
   };
 

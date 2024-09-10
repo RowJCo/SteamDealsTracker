@@ -18,10 +18,10 @@ const SignUpForm = () => {
         console.log("Unable to sign up");
         return setError('Failed to sign up. Please check your details and try again.');
       }
-      return navigate('/sign-in');
+      navigate('/sign-in');
     } catch (error) {
       console.log("Unable to sign up");
-      return setError('Failed to sign up. Please check your details and try again.');
+      setError('Failed to sign up. Please check your details and try again.');
     }
   };
 
