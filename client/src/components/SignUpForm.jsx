@@ -16,7 +16,7 @@ const SignUpForm = () => {
       await store.signUp();
       navigate('/sign-in');
     } catch (error) {
-      console.log("Unable to sign up", error);
+      console.log("Unable to sign up 1");
       setError('Failed to sign up. It is likely that your email has already been used to create an account.');
     }
   };

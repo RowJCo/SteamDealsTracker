@@ -66,7 +66,7 @@ const userStore = create((set) => ({
                 console.log("Signed up."); 
             }
         } catch (error) {
-            console.log("Unable to sign up.");
+            console.log("Unable to sign up 2.");
         }
     },
     //signs the user out removing the session cookie
