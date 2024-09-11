@@ -59,15 +59,14 @@ const userStore = create((set) => ({
                 body: JSON.stringify(signUpForm),
             });
             console.log(response);
-            if (response.status == 201) {
-                set({ signedIn: false, signUpForm: { email: "", password: "" } });
-                console.log("Signed up.");  
-            } else {
+            if (response.status == 400) {
                 throw new Error("Error signing up, please check your input.");
+            } else {
+                set({ signedIn: false, signUpForm: { email: "", password: "" } });
+                console.log("Signed up."); 
             }
         } catch (error) {
             console.log("Unable to sign up.");
-            throw new Error("Error signing up.");
         }
     },
     //signs the user out removing the session cookie
