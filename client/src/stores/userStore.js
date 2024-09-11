@@ -58,7 +58,7 @@ const userStore = create((set) => ({
                 },
                 body: JSON.stringify(signUpForm),
             });
-            if (response.status === 201) {
+            if (response.status == 201) {
                 set({ signedIn: false, signUpForm: { email: "", password: "" } });
                 console.log("Signed up.");  
             } else {
