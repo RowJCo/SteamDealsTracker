@@ -1,5 +1,4 @@
 //Imports dependencies
-import React, { useEffect } from 'react';
 import { useEffect} from 'react';
 import gameStore from '../stores/gameStore.js';
 

@@ -1,11 +1,10 @@
 //Imports dependencies
 import userStore from '../stores/userStore.js';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 const RequireAuth = (props) => {
 
     const store = userStore();
-    const [initialized, setInitialized] = useState(false);
 
     //checks if the user is signed in and reruns every 30 seconds
     useEffect(() => {
