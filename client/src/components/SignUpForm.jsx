@@ -17,7 +17,7 @@ const SignUpForm = () => {
       navigate('/sign-in');
     } catch (error) {
       console.log("Unable to sign up");
-      setError('Failed to sign up. Please check your details and try again.');
+      setError('Failed to sign up. It is likely that your email has already been used to create an account.');
     }
   };
 
