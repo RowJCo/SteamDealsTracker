@@ -13,7 +13,9 @@ const SignUpForm = () => {
     e.preventDefault();
     setError("");
     try {
-      await store.signUp();
+      const response = await store.signUp();
+      console.log(response);
+      console.log(response.status);
       navigate('/sign-in');
     } catch (error) {
       console.log("Unable to sign up 1");

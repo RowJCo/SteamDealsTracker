@@ -58,7 +58,7 @@ const userStore = create((set) => ({
                 },
                 body: JSON.stringify(signUpForm),
             });
-            console.log(response);
+            console.log(response.status);
             if (response.status == 400) {
                 throw new Error("Error signing up, please check your input.");
             } else {
