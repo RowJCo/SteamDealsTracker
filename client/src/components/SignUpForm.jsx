@@ -13,7 +13,7 @@ const SignUpForm = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await store.signUp();
+      await store.signUp();
       navigate('/sign-in');
     } catch (error) {
       console.log("Unable to sign up");
