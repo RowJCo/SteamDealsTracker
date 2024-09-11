@@ -58,16 +58,19 @@ const userStore = create((set) => ({
                 },
                 body: JSON.stringify(signUpForm),
             });
-            console.log("SignUp Store Response status:",response.status);
-            if (response.status == 400) {
-                throw new Error("Error signing up, please check your input.");
-                console.log("Unable to sign up 4");
-            } else {
+            console.log(response.status);
+            if (response.status === 201) {
                 set({ signedIn: false, signUpForm: { email: "", password: "" } });
-                console.log("Signed up."); 
+                console.log("Signed up.");
+            } else if (response.status === 400) {
+                throw new Error("Error signing up, please check your input.");
+            } else {
+                throw new Error("Unexpected error occurred during sign-up.");
             }
+            return response; // Ensure the promise resolves with the response
         } catch (error) {
-            console.log("Unable to sign up 2.");
+            console.log("Unable to sign up:", error.message);
+            throw error; // Ensure the promise rejects with the error
         }
     },
     //signs the user out removing the session cookie

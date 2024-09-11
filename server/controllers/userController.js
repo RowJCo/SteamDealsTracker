@@ -21,7 +21,7 @@ const signUp = async (req, res) => {
         await pool.query(query, values);
         return res.status(201).json({ message: "User created" });
     } catch (error) {
-        return res.status(400).json({ message: "Unable to sign up 3" });
+        return res.status(400).json({ message: "Unable to sign up" });
     }
 };
 
