@@ -67,10 +67,10 @@ const userStore = create((set) => ({
             } else {
                 throw new Error("Unexpected error occurred during sign-up.");
             }
-            return response; // Ensure the promise resolves with the response
+            return response;
         } catch (error) {
             console.log("Unable to sign up:", error.message);
-            throw error; // Ensure the promise rejects with the error
+            throw error;
         }
     },
     //signs the user out removing the session cookie
