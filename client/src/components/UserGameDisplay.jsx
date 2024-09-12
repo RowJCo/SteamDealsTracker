@@ -1,24 +1,24 @@
 //Imports dependencies
-import React from 'react';
-import { useState } from 'react';
+import { useEffect} from 'react';
 import gameStore from '../stores/gameStore.js';
 
 const UserGameDisplay = () => {
     const store = gameStore();
-    const [initialized, setInitialized] = useState(false);
 
-    //fetches the user's games when the component is first mounted
-    if (!initialized) {
+    //fetches the game data for when the component mounts and every 30 seconds after
+    useEffect(() => {
         store.fetchUserGames();
-        setInitialized(true);
-    }
-
-    //if the component has been initialised, fetch the user's games again after 30 seconds
-    if (initialized) {
-        setTimeout(() => {
+        //reruns fetchUserGames every 30 seconds
+        const interval = setInterval(() => {
             store.fetchUserGames();
-        }, 30000);
-    }
+        }
+        , 30000);
+    return () => {
+        clearInterval(interval);
+    }}, [store]);
+
+    //unmounts the component when the user logs out
+
 
     //renders the games the user is waiting for
     return (

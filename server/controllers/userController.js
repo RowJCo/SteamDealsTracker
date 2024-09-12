@@ -1,13 +1,14 @@
-//Imports dependencies
+//Imports node dependencies
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
+//import custom dependencies
 import pool from "../config/db.js";
 
 //Creates a new user
 const signUp = async (req, res) => {
     try {
         const { email, password } = req.body;
-        //checks if the email is already in use
         const emailQuery = "SELECT * FROM users WHERE email = $1";
         const emailValues = [email];
         const emailResult = await pool.query(emailQuery, emailValues);

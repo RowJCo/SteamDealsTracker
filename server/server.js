@@ -1,4 +1,4 @@
-//Imports dependencies
+//Imports node dependencies
 import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -7,6 +7,8 @@ import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+
+//Imports custom dependencies
 import gameData from "./workers/gameData.js";
 import gamePrices from "./workers/gamePrices.js";
 import emailAlert from "./workers/emailAlert.js";

@@ -14,10 +14,11 @@ const SignUpForm = () => {
     setError("");
     try {
       const response = await store.signUp();
+      console.log("Form response status:", response.status);
       navigate('/sign-in');
     } catch (error) {
-      console.log("Unable to sign up");
-      setError('Failed to sign up. Please check your details and try again.');
+      console.log("Unable to sign up user");
+      setError('Failed to sign up. It is likely that your email has already been used to create an account.');
     }
   };
 
