@@ -4,9 +4,9 @@ import sqlite from 'sqlite3';
 //Sets up the database structure
 const createDb = () => {
     //create the database or open it if it already exists
-    const db = new sqlite.Database("./steamdealstracker.sqlite", sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE, (err) => {
-        if (err) {
-            console.error(err.message);
+    const db = new sqlite.Database("./steamdealstracker.sqlite", sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE, (error) => {
+        if (error) {
+            console.error(error.message);
         }
         console.log("Connected to the database.");
     });
@@ -43,19 +43,19 @@ const createDb = () => {
     });
     console.log("Created the users_games table.");
     //close the database connection
-    db.close((err) => {
-        if (err) {
-            console.error(err.message);
+    db.close((error) => {
+        if (error) {
+            console.error(error.message);
         }
         console.log("Closed the database connection.");
     });
 }
 
-// Function to connect to the database in read-write mode
+//connects to the database in read-write mode
 const connectEditDb = () => {
-    const db = new sqlite.Database('./steamdealstracker.sqlite', sqlite.OPEN_READWRITE, (err) => {
-        if (err) {
-            console.error('Error opening database:', err.message);
+    const db = new sqlite.Database('./steamdealstracker.sqlite', sqlite.OPEN_READWRITE, (error) => {
+        if (error) {
+            console.error('Error opening database:', error.message);
         } else {
             console.log('Connected to the database.');
         }
@@ -65,11 +65,11 @@ const connectEditDb = () => {
     return db;
 };
 
-// Function to connect to the database in read-only mode
+//connects to the database in read-only mode
 const connectReadDb = () => {
-    const db = new sqlite.Database('./steamdealstracker.sqlite', sqlite.OPEN_READONLY, (err) => {
-        if (err) {
-            console.error('Error opening database:', err.message);
+    const db = new sqlite.Database('./steamdealstracker.sqlite', sqlite.OPEN_READONLY, (error) => {
+        if (error) {
+            console.error('Error opening database:', error.message);
         } else {
             console.log('Connected to the database.');
         }
@@ -79,28 +79,28 @@ const connectReadDb = () => {
     return db;
 };
 
-// Function to close the database connection
+//closes the database connection
 const closeDb = (db) => {
-    db.close((err) => {
-        if (err) {
-            console.error('Error closing database:', err.message);
+    db.close((error) => {
+        if (error) {
+            console.error('Error closing database:', error.message);
         } else {
             console.log('Closed the database connection.');
         }
     });
 };
 
-// Function to run a query with retry logic
+//runs a query with retry logic
 const runQueryWithRetry = (db, query, params, retries = 5) => {
     return new Promise((resolve, reject) => {
         const attempt = (retryCount) => {
-            db.run(query, params, (err) => {
-                if (err) {
-                    if (err.code === 'SQLITE_BUSY' && retryCount > 0) {
+            db.run(query, params, (error) => {
+                if (error) {
+                    if (error.code === 'SQLITE_BUSY' && retryCount > 0) {
                         console.warn(`Database is busy, retrying... (${retries - retryCount + 1}/${retries})`);
                         setTimeout(() => attempt(retryCount - 1), 1000); // Retry after 1 second
                     } else {
-                        reject(err);
+                        reject(error);
                     }
                 } else {
                     resolve();
