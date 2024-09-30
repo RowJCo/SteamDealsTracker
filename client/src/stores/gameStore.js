@@ -1,11 +1,11 @@
-//Imports dependencies
-import { create } from 'zustand';
+import { create } from "zustand";
 
-const gameStore = create((set) => ({
-    //initialises the data structures for the game store
-    allGames: [],
+//create a store for the game data
+export const gameStore = create((set) => ({
+    // initialise data structures
+    steamGames: [],
     userGames: [],
-    update:false,
+    update: false,
     createForm: {
         game_id: "",
         game_name: "",
@@ -18,74 +18,93 @@ const gameStore = create((set) => ({
         game_name: null,
         buyprice: "",
     },
-    //fetches all the steam games from the server
-    fetchAllGames: async () => {
-        try{
-            const response = await fetch("/api/games");
-            const data = await response.json();
-            set({ allGames: data });
-        } catch (error) {
-            console.log("Unable to fetch all games");
-        }
-    },
-    //fetches the user's games from the server
-    fetchUserGames: async () => {
-        try{
-            const response = await fetch("/api/user-games", {
-                method: 'GET',
-                credentials: "include",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await response.json();
-            set({ userGames: data });
-        } catch (error) {
-            console.log("Unable to fetch user games");
-        }
-    },
-    //creates a new user game on the server
-    createUserGame: async (e) => {
+    //fetch all steam games
+    fetchSteamGames: async () => {
         try {
-            e.preventDefault();
-            const { createForm } = gameStore.getState();
-            //uses the gameName to set the game_id in the createForm
-            const game = gameStore.getState().allGames.find(game => game.game_name === gameStore.getState().createForm.game_name);            createForm.game_id = game.game_id;
-            //updates the createForm
-            set({ createForm });
-            //sends the createForm to the server
-            await fetch("/api/user-games", {
-                method: 'POST',
+            //fetch data via the api
+            const response = await fetch("/api/games",{
+                method: "GET",
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(createForm),
             });
-            //resets the createForm
-            set({ createForm: { game_id: "", game_name:"", buyprice: "" }});
+            //parse the response
+            const games = await response.json();
+            //set the state
+            set({ steamGames: games });
         } catch (error) {
-            console.log("Unable to create user game");
+            console.error(error);
         }
     },
-    //deletes a user game from the server
+    //fetch all user games
+    fetchUserGames: async () => {
+        try {
+            //fetch data via the api
+            const response = await fetch("/api/user-games",{
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            //parse the response
+            const games = await response.json();
+            //set the state
+            set({ userGames: games });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    //add a user game
+    addUserGame: async (e) => {
+        try {
+            //prevent the default form submission
+            e.preventDefault();
+            //use the game_name to find the game_id
+            const findGameId = gameStore.getState().steamGames.find(game => game.game_name === gameStore.getState().createForm.game_name);
+            //send data via the api
+            const response = await fetch("/api/user-games",{
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    game_id: findGameId.game_id,
+                    game_name: e.target.game_name.value,
+                    buyprice: e.target.buyprice.value,
+                }),
+            });
+            //parse the response
+            const games = await response.json();
+            //adds the new game to the state
+            set((state) => ({ userGames: [...state.userGames, games] }));
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    //delete a user game
     deleteUserGame: async (user_game_id) => {
         try {
-            //deletes the user game from the server
-            await fetch("/api/user-games/"+user_game_id, {
-                method: 'DELETE',
+            //send delete request via the api
+            await fetch("/api/user-games/"+user_game_id,{
+                method: "DELETE",
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
+            //remove the game from the state
+            set((state) => ({ userGames: state.userGames.filter((game) => game.user_game_id !== user_game_id) }));
         } catch (error) {
-            console.log("Unable to delete user game");
+            console.error(error);
         }
     },
-    // deletes all the user games from the server for a specific user
-    deleteUsersUserGames: async (user_id) => {
+    //delete all user games of a specific user
+    deleteUsersUserGames: async () => {
         try {
+            //send delete request via the api
             await fetch("/api/user-games/",{
                 method: "DELETE",
                 credentials: "include",
@@ -93,79 +112,83 @@ const gameStore = create((set) => ({
                     "Content-Type": "application/json",
                 },
             });
+            //remove all games from the state
+            set({ userGames: [] });
         } catch (error) {
-            console.log("Unable to delete user games for user");
+            console.error(error);
         }
     },
-    //toggles the updateForm
+    //toggle update form
     toggleUpdate: (user_game_id, user_id, game_id, game_name, buyprice) => {
-        //toggles the updateForm
-        set({ update: !gameStore.getState().update,
+        set({
+            //toggle the update state
+            update: !gameStore.getState().update,
+            //set the update form data
             updateForm: {
                 user_game_id: user_game_id,
                 user_id: user_id,
                 game_id: game_id,
                 game_name: game_name,
                 buyprice: buyprice,
-            }
-         });
+            },
+        });
     },
-    //updates the user game on the server
     updateUserGame: async (e) => {
         try {
+            //prevent the default form submission
             e.preventDefault();
-            //sends the updateForm to the server
-            const { updateForm: { user_game_id, user_id, game_name, game_id, buyprice }} = gameStore.getState();
-            await fetch("/api/user-games/"+user_game_id, {
-                method: 'PUT',
+            //send put request via the api
+            const response = await fetch("/api/user-games/"+gameStore.getState().updateForm.user_game_id,{
+                method: "PUT",
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ user_game_id, user_id, game_id, game_name, buyprice }),
+                body: JSON.stringify({
+                    buyprice: e.target.buyprice.value,
+                }),
             });
-            set({ update: false,
-                updateForm: {
-                    user_game_id: null,
-                    user_id: null,
-                    game_id: null,
-                    game_name: null,
-                    buyprice: "",
-                }
-             });
+            //parse the response
+            const games = await response.json();
+            //update the game in the state
+            set((state) => ({
+                userGames: state.userGames.map((game) => {
+                    if (game.user_game_id === games.user_game_id) {
+                        return games;
+                    }
+                    return game;
+                }),
+            }));
+            //toggle the update state
+            set({ update: !gameStore.getState().update });
         } catch (error) {
-            console.log("Unable to update user game");
+            console.error(error);
         }
     },
-    //updates the createForm to be whatever the user types in the input field
-    updateCreateFormField: (e) => {
-        try {
-            const { createForm } = gameStore.getState();
-            set({ 
-                createForm: { 
-                    ...createForm, 
-                    [e.target.name]: e.target.value 
-                } 
-            });
+    //update the create form based on user input
+    handleCreateFieldChange: (e) => {
+        try{
+            set((state) => ({
+                createForm: {
+                    ...state.createForm,
+                    [e.target.name]: e.target.value,
+                },
+            }));
         } catch (error) {
-            console.log("Unable to update create form field");
+            console.error(error);
         }
     },
-    //updates the updateForm to be whatever the user types in the input field
+    //update the update form based on user input
     handleUpdateFieldChange: (e) => {
-        //updates the updateForm
-        try {
-            const { updateForm } = gameStore.getState();
-            set({ 
-                updateForm: { 
-                    ...updateForm, 
-                    [e.target.name]: e.target.value 
-                } 
-            });
+        try{
+            set((state) => ({
+                updateForm: {
+                    ...state.updateForm,
+                    [e.target.name]: e.target.value,
+                },
+            }));
         } catch (error) {
-            console.log("Unable to update update form field");
+            console.error(error);
         }
-    },
+    },  
 }));
-
-export default gameStore;

@@ -1,7 +1,8 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-const userStore = create((set) => ({
-    //initialises the data structures for the user store
+//create a store for the user data
+export const userStore = create((set) => ({
+    // initialise data structures
     signInForm: {
         email: "",
         password: "",
@@ -11,114 +12,91 @@ const userStore = create((set) => ({
         password: "",
     },
     signedIn: false,
-    //updates the sign in form when the user types in it
-    updateSignInForm: (e) => {
+    //sign in a user
+    signIn: async (e) => {
         try {
-            set((state) => ({ signInForm: { ...state.signInForm, [e.target.name]: e.target.value } }));
-        } catch (error) {
-            console.log("Unable to update sign in form");
-        }
-    },
-    //updates the sign up form when the user types in it
-    updateSignUpForm: (e) => {
-        try {
-            set((state) => ({ signUpForm: { ...state.signUpForm, [e.target.name]: e.target.value } }));
-        } catch (error) {
-            console.log("Unable to update sign up form");
-        }
-    },
-    //signs the user in if the details are correct
-    signIn: async () => {
-        try {
-            const { signInForm } = userStore.getState();
-            await fetch("/api/sign-in", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(signInForm),
-            });
-            if (response.status === 400) {
-                throw new Error("Error signing in");
-            }
-            set({ signedIn: true, signInForm: { email: "", password: "" } });
-        } catch (error) {
-            console.log("Unable to sign in");
-        }
-    },
-    //signs the user up if the email is not a duplicate
-    signUp: async () => {
-        try {
-            const { signUpForm } = userStore.getState();
-            const response = await fetch("/api/sign-up", {
-                method: 'POST',
+            //prevent the form from submitting
+            e.preventDefault();
+            //fetch data via the api
+            await fetch("/api/sign-in",{
+                method: "POST",
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(signUpForm),
+                body: JSON.stringify(set.signInForm),
             });
-            console.log(response.status);
-            if (response.status === 201) {
-                set({ signedIn: false, signUpForm: { email: "", password: "" } });
-                console.log("Signed up.");
-            } else if (response.status === 400) {
-                throw new Error("Error signing up, please check your input.");
-            } else {
-                throw new Error("Unexpected error occurred during sign-up.");
-            }
-            return response;
+            //set the state
+            set({ signedIn: true });
         } catch (error) {
-            console.log("Unable to sign up:", error.message);
-            throw error;
+            console.error(error);
         }
     },
-    //signs the user out removing the session cookie
+    //sign up a user
+    signUp: async (e) => {
+        try {
+            //prevent the form from submitting
+            e.preventDefault();
+            //fetch data via the api
+            await fetch("/api/sign-up",{
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(set.signUpForm),
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    //sign out a user
     signOut: async () => {
         try {
-            await fetch("/api/sign-out", {
-                method: 'GET',
+            //fetch data via the api
+            await fetch("/api/sign-out",{
+                method: "GET",
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
-            set({ signedIn: false });
-        } catch(error) {
-            console.log("Unable to sign out");
-            set({ signedIn: false });
-        }
-    },
-    //checks if the user is signed in
-    checkAuth: async () => {
-        const response = await fetch("/api/check-auth", {
-            method: 'GET',
-            credentials: "include",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.status === 200) {
-            set({ signedIn: true });
-        } else {
-            set({ signedIn: false });
-        }
-    },
-    //deletes the user from the database
-    deleteUser: async () => {
-        try {
-            await fetch("/api/del-user", {
-                method: 'DELETE',
-                credentials: "include",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            //set the state
             set({ signedIn: false });
         } catch (error) {
-            console.log("Unable to delete user");
+            console.error(error);
+        }
+    },
+    deleteUser: async () => {
+        try {
+            //fetch data via the api
+            await fetch("/api/user",{
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            //set the state
+            set({ signedIn: false });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    updateSignInForm: (e) => {
+        try {
+            //update the state
+            set({ signInForm: { ...set.signInForm, [e.target.name]: e.target.value } });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    updateSignUpForm: (e) => {
+        try {
+            //update the state
+            set({ signUpForm: { ...set.signUpForm, [e.target.name]: e.target.value } });
+        } catch (error) {
+            console.error(error);
         }
     },
 }));
-
-export default userStore;
