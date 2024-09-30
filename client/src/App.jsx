@@ -1,5 +1,7 @@
-//Imports dependencies
+//Imports node modules
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+
+//Imports custom modules
 import HomePage from './pages/HomePage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
