@@ -1,3 +1,4 @@
+//Imports custom modules
 import { connectEditDb, closeDb, runQueryWithRetry } from "../config/db.js";
 
 //collects all steam game data from the steam web api
@@ -18,8 +19,8 @@ const gameData = async () => {
             try {
                 //insert the game data into the games table
                 await runQueryWithRetry(db, `INSERT INTO games (game_id, game_name) VALUES (?, ?) ON CONFLICT DO NOTHING`, [game.appid, game.name]);
-            } catch (err) {
-                console.error(err.message);
+            } catch (error) {
+                console.error(error.message);
             }
         }
         //close the database connection
@@ -44,8 +45,8 @@ const gameData = async () => {
                 try {
                     //insert the game data into the games table
                     await runQueryWithRetry(db, `INSERT INTO games (game_id, game_name) VALUES (?, ?) ON CONFLICT DO NOTHING`, [game.appid, game.name]);
-                } catch (err) {
-                    console.error(err.message);
+                } catch (error) {
+                    console.error(error.message);
                 }
             }
             //close the database connection
@@ -56,8 +57,8 @@ const gameData = async () => {
             batchNum++;
         }
         console.log("Game data updated");
-    } catch (err) {
-        console.error(err.message);
+    } catch (error) {
+        console.error(error);
     }
 }
 

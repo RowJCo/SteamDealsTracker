@@ -1,5 +1,7 @@
+//imports custom modules
 import { connectEditDb, closeDb, runQueryWithRetry } from "../config/db";
 
+//sends an email to users if the price of a game is below or equal to their buy price
 const emailAlert = async () =>{
     try {
         //creates a transporter object to send the email with
@@ -83,7 +85,7 @@ const emailAlert = async () =>{
         });
         console.log("Email alerts sent");
     } catch (error) {
-        console.error("Error sending email alerts");
+        console.error(error);
     }
 }
 

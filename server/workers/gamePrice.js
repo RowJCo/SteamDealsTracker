@@ -1,5 +1,7 @@
+//Imports custom modules
 import { connectEditDb, closeDb, runQueryWithRetry  } from "../config/db";
 
+//fetches the price of games from the steam api and updates the price in the database
 const gamePrices = async () => {
     try {
         //collects all the game ids from games that users are interested in
