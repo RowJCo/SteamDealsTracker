@@ -10,7 +10,7 @@ const getUserGames = async (req, res) => {
             return;
         }
         //run a query to get all the user games from the users_games table
-        const result = await runQueryWithRetry(db, "SELECT * FROM users_games");
+        const result = await runQueryWithRetry(db, "SELECT * FROM users_games JOIN games ON users_games.game_id = games.game_id WHERE user_id = $1", [req.user_id]);
         //close the database connection
         closeDb(db);
         //send the user games to the client

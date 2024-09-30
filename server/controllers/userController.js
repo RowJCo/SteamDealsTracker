@@ -11,8 +11,12 @@ const signUp = async (req, res) => {
         //connect to the database in write mode
         const db = connectEditDb();
         if (!db) {
-            console.error("Error connecting to the database");
-            return;
+            return console.error("Error connecting to the database");
+        }
+        //check if the email is already in use
+        const emailCheck = await runQueryWithRetry(db, "SELECT * FROM users WHERE email = $1", [req.body.email]);
+        if (emailCheck.length > 0) {
+            return res.status(400).send("Email already in use");
         }
         //hash the user's password
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -34,8 +38,7 @@ const signIn = async (req, res) => {
         //connect to the database in read mode
         const db = connectReadDb();
         if (!db) {
-            console.error("Error connecting to the database");
-            return;
+            return console.error("Error connecting to the database");
         }
         //run a query to get the user's password
         const result = await runQueryWithRetry(db, "SELECT * FROM users WHERE email = $1", [req.body.email]);
@@ -43,13 +46,11 @@ const signIn = async (req, res) => {
         closeDb(db);
         //check if the user exists
         if (result.length === 0) {
-            res.status(400).send("User not found");
-            return;
+            return res.status(400).send("User not found");
         }
         //check if the password is correct
         if (!await bcrypt.compare(req.body.password, result[0].password)) {
-            res.status(400).send("Incorrect password");
-            return;
+            return res.status(400).send("Incorrect password");
         }
         //create a JWT token
         const token = jwt.sign({ user_id: result.user_id }, process.env.JWT_SECRET);
@@ -83,8 +84,7 @@ const deleteUser = async (req, res) => {
         //connect to the database in write mode
         const db = connectEditDb();
         if (!db) {
-            console.error("Error connecting to the database");
-            return;
+            return console.error("Error connecting to the database");
         }
         //run a query to delete the user from the users table
         const result = await runQueryWithRetry(db, "DELETE FROM users WHERE user_id = $1", [req.user_id]);

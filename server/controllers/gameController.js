@@ -41,3 +41,5 @@ const getGame = async (req,res) => {
         res.status(400).send("Error getting game",);
     }
 };
+
+export { getGames, getGame };
