@@ -31,7 +31,11 @@ app.use(rateLimiter);
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        secure: true,
+        httpOnly: true,
+    }
 }));
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
