@@ -1,12 +1,11 @@
-//Imports dependencies
-import nodemailer from 'nodemailer';
-import pool from '../config/db.js';
+//imports custom modules
+import { connectEditDb, closeDb, runQueryWithRetry } from "../config/db";
 
-//Sends email alerts to users
-const emailAlert = async () => {
-    try{
+//sends an email to users if the price of a game is below or equal to their buy price
+const emailAlert = async () =>{
+    try {
         //creates a transporter object to send the email with
-        let transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             service: process.env.EMAIL_SERVICE,
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
@@ -17,16 +16,15 @@ const emailAlert = async () => {
             }
         });
         //combines the users_games, games, and users tables to get the email and buy price of each user
-        const query = `
-            SELECT * FROM users_games
-            JOIN games ON users_games.game_id = games.game_id
-            JOIN users ON users_games.user_id = users.user_id
-        `;
-        const result = await pool.query(query);
+        try {
+            const result = await runQueryWithRetry(db, `SELECT * FROM users_games JOIN games ON users_games.game_id = games.game_id JOIN users ON users_games.user_id = users.user_id`);
+        } catch (error) {
+            console.error(error);
+        }
         //iterates over the result and sends an email to each user if the price of the game is below the buy price
         result.rows.forEach(async (game) => {
             if (game.price <= game.buyprice) {
-                let mailOptions = {
+                const mailOptions = {
                     from: process.env.EMAIL_USER,
                     to: game.email,
                     subject: 'Game Price Alert',
@@ -87,8 +85,8 @@ const emailAlert = async () => {
         });
         console.log("Email alerts sent");
     } catch (error) {
-        console.log("Error sending email alerts");
+        console.error(error);
     }
-};
+}
 
 export default emailAlert;

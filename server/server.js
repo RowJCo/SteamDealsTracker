@@ -1,113 +1,89 @@
-//Imports node dependencies
+//Imports node modules
 import express from "express";
-import cookieParser from "cookie-parser";
+import session from "express-session";
 import dotenv from "dotenv";
-import cron from "node-cron";
-import rateLimit from "express-rate-limit";
 import path from "path";
+import { csrf } from "lusca";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-//Imports custom dependencies
+//Imports custom modules
+
+//modules needed to setup the database
+import { createDb } from "./config/db.js";
 import gameData from "./workers/gameData.js";
-import gamePrices from "./workers/gamePrices.js";
-import emailAlert from "./workers/emailAlert.js";
-import setup from "./config/setup.js";
+
+//middleware
+import rateLimiter from "./middleware/rateLimiter.js";
 import checkAuth from "./middleware/checkAuth.js";
+
+//controllers
 import userController from "./controllers/userController.js";
 import gameController from "./controllers/gameController.js";
 import userGameController from "./controllers/userGameController.js";
 
 //sets up environment variables
+dotenv.config();
 
-dotenv.config()
-
-//Sets up the express app
+//creates an express app and configures it
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
+app.use(csrf());
+app.use(rateLimiter);
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: true,
+        httpOnly: true,
+    }
+}));
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-//sets up rate limiting
+//sets up the routes
 
-var limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 1000, // limit each IP to 1000 requests per windowMs
-	skipFailedRequests : true
-})
-
-app.set('trust proxy', 1 /* number of proxies between user and server */)
-app.use(limiter);
-
-//Routes
-
-//User routes
+//user routes
 app.post("/api/sign-up", userController.signUp);
 app.post("/api/sign-in", userController.signIn);
 app.get("/api/sign-out", userController.signOut);
-app.get("/api/check-auth", checkAuth, userController.checkAuth);
 app.delete("/api/del-user", checkAuth, userController.deleteUser);
+app.get("/api/check-auth", checkAuth, userController.checkAuth);
 
-//Game routes
-app.get("/api/games", gameController.getGames);
-app.get("/api/games/:game_name", gameController.getGame);
+//game routes
+app.get("/api/games", checkAuth, gameController.getGames);
+app.get("/api/games/:game_name", checkAuth, gameController.getGame);
 
-//User game routes
+//user game routes
 app.get("/api/user-games", checkAuth, userGameController.getUserGames);
 app.post("/api/user-games", checkAuth, userGameController.addUserGame);
 app.put("/api/user-games/:user_game_id", checkAuth, userGameController.updateUserGame);
 app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.deleteUserGame);
 app.delete("/api/user-games/", checkAuth, userGameController.deleteUsersUserGames);
 
-//Handles Static files
-app.get('/*', function(_, res) {
-    res.sendFile(path.join(__dirname, '/build/index.html'), function(err) {
-      if (err) {
-        res.status(500).send(err)
-      }
-    })
-});
+//static file routes
+//app.get('/*', function(_, res) {
+    //res.sendFile(path.join(__dirname, '/build/index.html'), function(err) {
+      //if (err) {
+        //res.status(500).send(err)
+      //}
+    //})
+//});
 
-//Starts the server
-app.listen(process.env.SERVER_PORT, () => {
+
+//sets up the server
+app.listen(process.env.SERVER_PORT, async () => {
     console.log("Server is running on port "+process.env.SERVER_PORT);
-    //initialises database and game data upon server start
-    try {
-        setup();
-        console.log("Tables created");
+    try{
+        await createDb();
+    } catch (error) {
+        console.error(error);
     }
-    catch (error) {
-        console.error("Error setting up tables");
+    try{
+        await gameData();
+    } catch (error) {
+        console.error(error);
     }
-    try {
-        gameData();
-    }
-    catch (error) {
-        console.error("Error updating game data");
-    }
-});
-
-//Cron jobs
-
-//gets the steam game data every day to update new games
-
-cron.schedule("27 11 * * *", async () => {
-    console.log("Updating game data");
-    gameData();
-});
-
-//checks the game prices of user games every day
-
-cron.schedule("40 11 * * *", async () => {
-    console.log("Checking game prices");
-    gamePrices();
-});
-
-//sends email alerts if the user's game price is below the threshold
-
-cron.schedule("44 11 * * *", async () => {
-    console.log("Sending email alerts");
-    emailAlert();
 });

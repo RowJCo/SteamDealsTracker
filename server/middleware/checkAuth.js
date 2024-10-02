@@ -1,16 +1,9 @@
-//Imports dependencies
-import jwt from 'jsonwebtoken';
-
-//Checks if the user is authenticated by verifying the token
+//Checks if the user is authenticated by checking if the session has a userId
 const checkAuth = async (req, res, next) => {
     try {
-        const token = req.cookies.Authorization;
-        if (!token) {
-            return res.status(401).json({ message: 'No Token' });
+        if (req.session.userId) {
+            return next();
         }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user_id = decoded.user_id;
-        return next();
     } catch (error) {
         console.log(error);
         return res.status(401).json({ message: "Unable to check authorization" });
