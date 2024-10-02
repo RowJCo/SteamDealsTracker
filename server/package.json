@@ -16,6 +16,7 @@
     "express": "^4.21.0",
     "express-rate-limit": "^7.4.0",
     "express-session": "^1.18.0",
+    "lusca": "^1.7.0",
     "path": "^0.12.7",
     "sqlite3": "^5.1.7"
   },

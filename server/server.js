@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
 import path from "path";
+import csrf from "lusca";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -27,6 +28,7 @@ dotenv.config();
 //creates an express app and configures it
 const app = express();
 app.use(express.json());
+app.use(csrf());
 app.use(rateLimiter);
 app.use(session({
     secret: process.env.SESSION_SECRET,
