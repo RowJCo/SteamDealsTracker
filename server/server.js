@@ -1,7 +1,10 @@
 //Imports node modules
 import express from "express";
+import session from "express-session";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 //Imports custom modules
 
@@ -19,13 +22,17 @@ import gameController from "./controllers/gameController.js";
 import userGameController from "./controllers/userGameController.js";
 
 //sets up environment variables
-dotenv.config()
+dotenv.config();
 
 //creates an express app and configures it
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
-app.use(rateLimiter);
+//app.use(rateLimiter);
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(express.static('build'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,6 +44,7 @@ app.post("/api/sign-up", userController.signUp);
 app.post("/api/sign-in", userController.signIn);
 app.get("/api/sign-out", userController.signOut);
 app.delete("/api/del-user", checkAuth, userController.deleteUser);
+app.get("/api/check-auth", checkAuth, userController.checkAuth);
 
 //game routes
 app.get("/api/games", checkAuth, gameController.getGames);
@@ -50,13 +58,13 @@ app.delete("/api/user-games/:user_game_id", checkAuth, userGameController.delete
 app.delete("/api/user-games/", checkAuth, userGameController.deleteUsersUserGames);
 
 //static file routes
-app.get('/*', function(_, res) {
-    res.sendFile(path.join(__dirname, '/build/index.html'), function(err) {
-      if (err) {
-        res.status(500).send(err)
-      }
-    })
-});
+//app.get('/*', function(_, res) {
+    //res.sendFile(path.join(__dirname, '/build/index.html'), function(err) {
+      //if (err) {
+        //res.status(500).send(err)
+      //}
+    //})
+//});
 
 
 //sets up the server
