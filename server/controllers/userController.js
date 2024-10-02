@@ -1,9 +1,8 @@
 //Import node modules
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 //Import custom modules
-import { connectEditDb, connectReadDb, closeDb, runQueryWithRetry } from '../config/db';
+import { connectEditDb, connectReadDb, closeDb, runQueryWithRetry } from '../config/db.js';
 
 //create a new user
 const signUp = async (req, res) => {
@@ -11,11 +10,12 @@ const signUp = async (req, res) => {
         //connect to the database in write mode
         const db = connectEditDb();
         if (!db) {
-            return console.error("Error connecting to the database");
+            return res.status(400).send("Error connecting to the database");
         }
-        //check if the email is already in use
-        const emailCheck = await runQueryWithRetry(db, "SELECT * FROM users WHERE email = $1", [req.body.email]);
-        if (emailCheck.length > 0) {
+        //check if the email is already in use by checking if the email exists in the users table and return a true or false value
+        const emailExists = await runQueryWithRetry(db, "SELECT * FROM users WHERE email = ?", [req.body.email]);
+        if (emailExists) {
+            closeDb(db);
             return res.status(400).send("Email already in use");
         }
         //hash the user's password
@@ -25,7 +25,7 @@ const signUp = async (req, res) => {
         //close the database connection
         closeDb(db);
         //send the result to the client
-        res.status(200).send(result);
+        res.status(200).send("User created");
     } catch (error) {
         console.error(error);
         res.status(400).send("Error creating user");
@@ -52,21 +52,13 @@ const signIn = async (req, res) => {
         if (!await bcrypt.compare(req.body.password, result[0].password)) {
             return res.status(400).send("Incorrect password");
         }
-        //create a JWT token
-        const token = jwt.sign({ user_id: result.user_id }, process.env.JWT_SECRET);
-        //set the token as a cookie
-        res.cookie("Authorization", token, { 
-            httpOnly: true,
-            path: "/",
-            secure: true,
-            sameSite: "Strict",
-            maxAge: 3600000
-         });
+        //add user_id to the session
+        req.session.userId = result[0].user_id;
         //send a success message to the client
         res.status(200).send("User signed in");
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error signing in user");
+        res.status(400).send("Error signing in user", error);
     }
 };
 
@@ -87,7 +79,7 @@ const deleteUser = async (req, res) => {
             return console.error("Error connecting to the database");
         }
         //run a query to delete the user from the users table
-        const result = await runQueryWithRetry(db, "DELETE FROM users WHERE user_id = $1", [req.user_id]);
+        const result = await runQueryWithRetry(db, "DELETE FROM users WHERE user_id = $1", [req.session.userId]);
         //close the database connection
         closeDb(db);
         //send the result to the client
@@ -98,4 +90,13 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export { signUp, signIn, signOut, deleteUser };
+//check if a user is signed in
+const checkAuth = async (req, res) => {
+    try {
+        return res.status(200).json({ message: 'User is authenticated' });
+    } catch (error) {
+        return res.status(400).json({ error: 'User is not authenticated' });
+    }
+};
+
+export default { signUp, signIn, signOut, deleteUser, checkAuth };

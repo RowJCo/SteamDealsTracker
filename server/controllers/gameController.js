@@ -1,4 +1,4 @@
-import { connectReadDb, closeDb, runQueryWithRetry } from "../config/db";
+import { connectReadDb, closeDb, runQueryWithRetry } from "../config/db.js";
 
 //collects all the games from the games table
 const getGames = async (req, res) => {
@@ -42,4 +42,4 @@ const getGame = async (req,res) => {
     }
 };
 
-export { getGames, getGame };
+export default { getGames, getGame };
