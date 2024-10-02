@@ -3,7 +3,7 @@ import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
 import path from "path";
-import csrf from "lusca";
+import { csrf } from "lusca";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
