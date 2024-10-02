@@ -27,7 +27,7 @@ dotenv.config();
 //creates an express app and configures it
 const app = express();
 app.use(express.json());
-//app.use(rateLimiter);
+app.use(rateLimiter);
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
