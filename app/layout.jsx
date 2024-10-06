@@ -8,18 +8,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="night">
+    <html lang="en" data-theme="dark">
       <body>
         <header>
           <div className="navbar bg-base-100">
             <div className="flex-1">
-              <a className="btn btn-ghost text-xl">Steam Deals Tracker</a>
+              <Link className="btn btn-ghost text-xl font-black" href="/">
+                Steam Deals Tracker
+              </Link>
             </div>
             <div className="flex-none">
               <ul className="menu menu-horizontal px-1">
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
                 <li>
                   <Link href="/dashboard">Dashboard</Link>
                 </li>
