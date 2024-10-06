@@ -1,12 +1,25 @@
 {
   "name": "steamdealstracker",
   "version": "1.0.0",
-  "description": "This is a web app that allows you to receive email alerts when a steam game goes under a specific price.",
+  "description": "A web app that allows you to pick a steam game and a price and receive alerts when the game goes on sale to that ammount.",
+  "main": "index.js",
   "scripts": {
-    "build": "cd client && npm install && npm run build && cd .. && cd server && npm install",
-    "start": "cd server && npm run start",
-    "dev": "cd server && npm run dev"
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint"
   },
   "author": "Rowen Collier",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.2.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "daisyui": "^4.12.12",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  }
 }
