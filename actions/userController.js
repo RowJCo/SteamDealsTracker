@@ -18,4 +18,30 @@ export const signUp = async function (prevState, formData) {
   //remove whitespace from email and password
   user.email = user.email.trim();
   user.password = user.password.trim();
+  //checks if the email is an email
+  if (!user.email.includes("@")) {
+    errors.email = "Email must be an email";
+  }
+  //checks if email is empty
+  if (user.email === "") {
+    errors.email = "Email is required";
+  }
+  //checks if password is empty
+  if (user.password === "") {
+    errors.password = "Password is required";
+  }
+  //checks the length of the password
+  if (user.password.length < 8) {
+    errors.password = "Password must be at least 8 characters";
+  }
+  //checks if there are any errors
+  if (errors.email || errors.password) {
+    return { errors, success: false };
+  }
+  //stores the user object in the database
+
+  //log the user via cookie
+
+  //return the user object
+  return { user, success: true };
 };
