@@ -11,7 +11,7 @@ export default function page() {
       <h2 className="text-2xl text-center py-2 ">
         With Steam Deals Tracker it's simple!
       </h2>
-      <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+      <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical py-6">
         <li>
           <div class="timeline-middle">
             <svg
@@ -114,7 +114,7 @@ export default function page() {
           <hr />
         </li>
       </ul>
-      <p className="text-2xl text-center py-2">
+      <p className="text-2xl text-center py-8">
         {" "}
         Don't have an account?{" "}
         <Link href="/signup">
