@@ -63,7 +63,7 @@ export default function SignUpForm() {
           </div>
         )}
       </div>
-      <div className="mb-3">
+      <div className="mb-3 flex justify-center">
         <button className="btn btn-primary">Create Account</button>
       </div>
       {formState.errors?.success && (
