@@ -5,8 +5,6 @@ import { signUp } from "../actions/userController.js";
 
 export default function SignUpForm() {
   const [formState, formAction] = useFormState(signUp, {});
-  console.log(formState);
-
   return (
     <>
       <h1 className="text-2xl text-center py-6">

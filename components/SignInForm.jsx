@@ -5,8 +5,6 @@ import { signIn } from "../actions/userController.js";
 
 export default function SignInForm() {
   const [formState, formAction] = useFormState(signIn, {});
-  console.log(formState);
-
   return (
     <>
       <h1 className="text-2xl text-center py-6">
