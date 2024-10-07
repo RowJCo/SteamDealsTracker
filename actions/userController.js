@@ -117,6 +117,14 @@ export const signUp = async function (prevState, formData) {
   if (user.password.length < 8) {
     errors.password = "Password must be at least 8 characters";
   }
+  //checks if the email is already in the database
+  let db = await connectReadDb();
+  let query = "SELECT * FROM users WHERE email = ?";
+  const userExists = await runQueryWithRetry(db, query, [user.email]);
+  //close the database connection
+  if (userExists.length) {
+    errors.email = "Email already in use";
+  }
   //checks if there are any errors
   if (errors.email || errors.password) {
     return { errors, success: false };
@@ -125,8 +133,7 @@ export const signUp = async function (prevState, formData) {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   //stores the user object in the database
-  let db = await connectEditDb();
-  const query = "INSERT INTO users (email, password) VALUES (?, ?)";
+  query = "INSERT INTO users (email, password) VALUES (?, ?)";
   await runQueryWithRetry(db, query, [user.email, user.password]);
   //close the database connection
   await closeDb(db);
