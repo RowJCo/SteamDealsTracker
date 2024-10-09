@@ -9,7 +9,25 @@ export default async function page() {
     <>
       {user && (
         <>
-          <p>Welcome you are logged in!</p>
+          <h1 className="text-4xl text-center py-2 font-black">
+            Welcome back {user.email}!
+          </h1>
+          <h2 className="text-2xl text-center py-2 px-8">
+            You can now start adding games to your wishlist or view your current
+            wishlist.
+          </h2>
+          <ul className="menu menu-horizontal flex justify-center space-x-4">
+            <li>
+              <Link className="btn btn-primary" href="/browse">
+                Browse Games
+              </Link>
+            </li>
+            <li>
+              <Link className="btn btn-primary" href="/wishlist">
+                View Wishlist
+              </Link>
+            </li>
+          </ul>
         </>
       )}
       {!user && (
