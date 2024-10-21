@@ -7,6 +7,7 @@ dotenv.config();
 //import dependencies
 import express from "express";
 import cookieParser from "cookie-parser";
+import statusMonitor from "express-status-monitor";
 import { createDb } from "./utils/db.js";
 
 import path from "path";
@@ -22,6 +23,7 @@ import scheduleJobs from "./utils/scheduleJobs.js";
 
 //setup the express app
 const app = express();
+app.use(statusMonitor());
 app.use(express.json());
 app.use(cookieParser());
 app.use(rateLimiter);
