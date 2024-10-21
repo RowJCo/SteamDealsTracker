@@ -14,6 +14,8 @@ const gameData = async () => {
     );
     const data = await response.json();
     const games = data.applist.apps;
+    //create variable to keep track of the number of games inserted
+    let gamesInserted = 0;
     //insert the game data into the database
     games.forEach(async (game) => {
       if (
@@ -27,6 +29,10 @@ const gameData = async () => {
           "INSERT INTO games (id, name) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING",
           [game.appid, game.name]
         );
+        gamesInserted++;
+        if (gamesInserted % 100 === 0) {
+          console.log("Inserted " + gamesInserted + " games");
+        }
       }
     });
     //close the database connection
