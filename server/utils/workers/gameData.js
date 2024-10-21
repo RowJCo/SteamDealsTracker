@@ -42,7 +42,7 @@ const gameData = async () => {
       }
       console.log(`Processed batch ${i / 10000 + 1}`);
       // Wait for 1 minute before processing the next batch
-      await delay(60000);
+      await delay(5000);
     }
     //close the database connection
     closeDb(db);
