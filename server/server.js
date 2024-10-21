@@ -48,9 +48,11 @@ app.get("/*", function (_, res) {
   });
 });
 
+const PORT = process.env.PORT || 10000;
+
 //start the server
-app.listen(process.env.PORT, async () => {
-  console.log("Server is running on port " + process.env.PORT);
+app.listen(PORT, async () => {
+  console.log("Server is running on port " + PORT);
   //initialises database , game data and workers upon server start
   try {
     await createDb();
