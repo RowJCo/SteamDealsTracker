@@ -9,12 +9,7 @@ Steam Deals tracker is a web app that allows you to add games and what price you
 To run the web app yourself you need to:
 * Clone or download and unzip the repository
 * Setup a .env file in the root folder, including:
-  * `SERVER_PORT`: the port to host the web app on.
-  * `DB_HOST`: the internal hostname of your postgresql database.
-  * `DB_NAME`: the name of your postgresql database.
-  * `DB_USER`: the name of the user for the postgresql database.
-  * `DB_PASS`: the password for the postgresql database.
-  * `DB_PORT`: the port the postgresql database is on.
+  * `PORT`: the port to host the web app on.
   * `JWT_SECRET`: a random string of numbers , letters and characters.
   * `STEAM_KEY`: the key needed to access some parts of the Steam API.
   * `EMAIL_HOST`: the email service being used to send notifications.
