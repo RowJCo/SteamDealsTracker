@@ -1,7 +1,7 @@
 {
   "name": "steamdealstracker",
-  "version": "1.0.0",
-  "description": "This is a web app that allows you to receive email alerts when a steam game goes under a specific price.",
+  "version": "2.0.0",
+  "description": "This is a web app that allows you to create and receive notifications when a game goes below a certain price on steam.",
   "scripts": {
     "build": "cd client && npm install && npm run build && cd .. && cd server && npm install",
     "start": "cd server && npm run start",

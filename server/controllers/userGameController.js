@@ -1,108 +1,89 @@
-import { connectEditDb, connectReadDb, closeDb, runQueryWithRetry } from "../config/db.js";
+// userGameController.js - perform CRD operations on the users_games table
 
-//collects all user games from the users_games table
+// import dependencies
+import {
+  connectEditDb,
+  connectReadDb,
+  closeDb,
+  runQueryWithRetry,
+} from "../utils/db.js";
+
 const getUserGames = async (req, res) => {
-    try{
-        //connect to the database in read only mode
-        const db = connectReadDb();
-        if (!db) {
-            console.error("Error connecting to the database");
-            return;
-        }
-        //run a query to get all the user games from the users_games table
-        const result = await runQueryWithRetry(db, "SELECT * FROM users_games JOIN games ON users_games.game_id = games.game_id WHERE user_id = $1", [req.session.userId]);
-        //close the database connection
-        closeDb(db);
-        //send the user games to the client
-        res.status(200).send(result.rows);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send("Error getting user games");
-    }
+  try {
+    //connect to the database
+    const db = connectReadDb();
+    // get the user_id from the request object
+    const { user_id } = req;
+    // get all user games from the database
+    const response = await runQueryWithRetry(
+      db,
+      "SELECT * FROM users_games WHERE user_id = $1",
+      [user_id]
+    );
+    closeDb(db);
+    // return the user games
+    return res.status(200).json({
+      message: "Collected all price notifications",
+      data: response.rows,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ message: "Unable to get price notifications" });
+  }
 };
 
-//adds a user game to the users_games table
 const addUserGame = async (req, res) => {
-    try {
-        //connect to the database in write mode
-        const db = connectEditDb();
-        if (!db) {
-            console.error("Error connecting to the database");
-            return;
-        }
-        //run a query to add a user game to the users_games table
-        const result = await runQueryWithRetry(db, "INSERT INTO users_games (user_id, game_id, game_name, buyprice) VALUES ($1, $2, $3, $4)", [req.session.userId, req.body.game_id, req.body.game_name, req.body.buyprice]);
-        //close the database connection
-        closeDb(db);
-        //send the result to the client
-        res.status(200).send(result);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send("Error adding user game");
-    }
+  try {
+    //connect to the database
+    const db = connectEditDb();
+    // get the user_id from the request object
+    const { user_id } = req;
+    // get game_id, game_name, and buy_price from the request body
+    const { game_id, game_name, buy_price } = req.body;
+    // insert the game into the database
+    const response = await runQueryWithRetry(
+      db,
+      "INSERT INTO users_games (user_id, game_id, game_name, buy_price) VALUES ($1, $2, $3, $4) RETURNING *",
+      [user_id, game_id, game_name, buy_price]
+    );
+    closeDb(db);
+    // return the game data
+    return res.status(201).json({
+      message: "Added price notification",
+      data: response.rows,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Unable to add game" });
+  }
 };
 
-//deletes a user game from the users_games table
 const deleteUserGame = async (req, res) => {
-    try {
-        //connect to the database in write mode
-        const db = connectEditDb();
-        if (!db) {
-            console.error("Error connecting to the database");
-            return;
-        }
-        //run a query to delete a user game from the users_games table
-        const result = await runQueryWithRetry(db, "DELETE FROM users_games WHERE user_id = $1 AND user_game_id = $2", [req.session.userId, req.params.user_game_id]);
-        //close the database connection
-        closeDb(db);
-        //send the result to the client
-        res.status(200).send(result);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send("Error deleting user game");
-    }
+  try {
+    //connect to the database
+    const db = connectEditDb();
+    // get the user_id from the request object
+    const { user_id } = req;
+    // get the id from the request parameters
+    const { id } = req.params;
+    // delete the game from the database
+    const response = await runQueryWithRetry(
+      db,
+      "DELETE FROM users_games WHERE id = $1 AND user_id = $2 RETURNING *",
+      [id, user_id]
+    );
+    closeDb(db);
+    // return the game data
+    return res.status(200).json({
+      message: "Deleted price notification",
+      data: response.rows,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Unable to delete game" });
+  }
 };
 
-//updates a user games buyprice in the users_games table
-const updateUserGame = async (req, res) => {
-    try {
-        //connect to the database in write mode
-        const db = connectEditDb();
-        if (!db) {
-            console.error("Error connecting to the database");
-            return;
-        }
-        //run a query to update a user games buyprice in the users_games table
-        const result = await runQueryWithRetry(db, "UPDATE users_games SET buyprice = $1 WHERE user_id = $2 AND user_game_id = $3", [req.body.buyprice, req.session.userId, req.params.user_game_id]);
-        //close the database connection
-        closeDb(db);
-        //send the result to the client
-        res.status(200).send(result);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send("Error updating user game");
-    }
-};
-
-//deletes all the usergames of a specific user
-const deleteUsersUserGames = async (req, res) => {
-    try {
-        //connect to the database in write mode
-        const db = connectEditDb();
-        if (!db) {
-            console.error("Error connecting to the database");
-            return;
-        }
-        //run a query to delete all the user games of a specific user
-        const result = await runQueryWithRetry(db, "DELETE FROM users_games WHERE user_id = $1", [req.session.userId]);
-        //close the database connection
-        closeDb(db);
-        //send the result to the client
-        res.status(200).send(result);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send("Error deleting user games");
-    }
-};
-
-export default { getUserGames, addUserGame, deleteUserGame, updateUserGame, deleteUsersUserGames };
+export { getUserGames, addUserGame, deleteUserGame };

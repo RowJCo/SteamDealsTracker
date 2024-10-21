@@ -1,8 +1,7 @@
 {
-  "name": "server",
+  "name": "steam-deals-tracker-server",
   "type": "module",
-  "version": "1.0.0",
-  "description": "The server for a web app that sends email alerts when a steam game goes on sale at a specific value.",
+  "version": "2.0.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,12 +10,14 @@
   "author": "Rowen Collier",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "express-rate-limit": "^7.4.0",
-    "express-session": "^1.18.0",
-    "lusca": "^1.7.0",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.15",
     "path": "^0.12.7",
     "sqlite3": "^5.1.7"
   },
